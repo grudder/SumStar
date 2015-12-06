@@ -13,9 +13,10 @@ namespace SumStar.Controllers
 	[Authorize]
 	public class ManageController : Controller
 	{
-		private ApplicationSignInManager _signInManager;
 		private ApplicationUserManager _userManager;
 
+		private ApplicationSignInManager _signInManager;
+		
 		public ManageController()
 		{
 		}
@@ -24,18 +25,6 @@ namespace SumStar.Controllers
 		{
 			UserManager = userManager;
 			SignInManager = signInManager;
-		}
-
-		public ApplicationSignInManager SignInManager
-		{
-			get
-			{
-				return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
-			}
-			private set
-			{
-				_signInManager = value;
-			}
 		}
 
 		public ApplicationUserManager UserManager
@@ -47,6 +36,18 @@ namespace SumStar.Controllers
 			private set
 			{
 				_userManager = value;
+			}
+		}
+
+		public ApplicationSignInManager SignInManager
+		{
+			get
+			{
+				return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
+			}
+			private set
+			{
+				_signInManager = value;
 			}
 		}
 
@@ -75,7 +76,6 @@ namespace SumStar.Controllers
 
 		//
 		// GET: /Manage/ChangePassword
-		[Authorize(Roles = "Admin")]
 		public ActionResult ChangePassword()
 		{
 			return View();
@@ -110,10 +110,19 @@ namespace SumStar.Controllers
 
 		protected override void Dispose(bool disposing)
 		{
-			if (disposing && _userManager != null)
+			if (disposing)
 			{
-				_userManager.Dispose();
-				_userManager = null;
+				if (_userManager != null)
+				{
+					_userManager.Dispose();
+					_userManager = null;
+				}
+
+				if (_signInManager != null)
+				{
+					_signInManager.Dispose();
+					_signInManager = null;
+				}
 			}
 
 			base.Dispose(disposing);

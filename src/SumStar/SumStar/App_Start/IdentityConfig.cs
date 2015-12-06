@@ -10,7 +10,6 @@ using Microsoft.Owin.Security;
 
 using SumStar.DataAccess;
 using SumStar.Models;
-using SumStar.Models.ViewModels;
 
 namespace SumStar
 {
@@ -30,7 +29,7 @@ namespace SumStar
 			manager.UserValidator = new UserValidator<ApplicationUser>(manager)
 			{
 				AllowOnlyAlphanumericUserNames = false,
-				RequireUniqueEmail = true
+				RequireUniqueEmail = false
 			};
 
 			// 配置密码的验证逻辑
@@ -75,6 +74,23 @@ namespace SumStar
 			IOwinContext context)
 		{
 			return new ApplicationSignInManager(context.GetUserManager<ApplicationUserManager>(), context.Authentication);
+		}
+	}
+
+	/// <summary>
+	/// 配置此应用程序中使用的应用程序角色管理器。
+	/// </summary>
+	public class ApplicationRoleManager : RoleManager<ApplicationRole>
+	{
+		public ApplicationRoleManager(RoleStore<ApplicationRole> store)
+			: base(store)
+		{
+		}
+
+		public static ApplicationRoleManager Create(IdentityFactoryOptions<ApplicationRoleManager> options,
+			IOwinContext context)
+		{
+			return new ApplicationRoleManager(new RoleStore<ApplicationRole>(context.Get<ApplicationDbContext>()));
 		}
 	}
 }

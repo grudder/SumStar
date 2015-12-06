@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -6,6 +7,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 
+using SumStar.DataAccess;
 using SumStar.Models;
 using SumStar.Models.ViewModels;
 
@@ -14,28 +16,30 @@ namespace SumStar.Controllers
 	[Authorize]
 	public class AccountController : Controller
 	{
-		private ApplicationSignInManager _signInManager;
+		private ApplicationDbContext _dbContext;
 		private ApplicationUserManager _userManager;
+		private ApplicationSignInManager _signInManager;
 
 		public AccountController()
 		{
 		}
 
-		public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
+		public AccountController(ApplicationDbContext dbContext, ApplicationUserManager userManager, ApplicationSignInManager signInManager)
 		{
+			DbContext = dbContext;
 			UserManager = userManager;
 			SignInManager = signInManager;
 		}
 
-		public ApplicationSignInManager SignInManager
+		public ApplicationDbContext DbContext
 		{
 			get
 			{
-				return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
+				return _dbContext ?? HttpContext.GetOwinContext().Get<ApplicationDbContext>();
 			}
 			private set
 			{
-				_signInManager = value;
+				_dbContext = value;
 			}
 		}
 
@@ -48,6 +52,18 @@ namespace SumStar.Controllers
 			private set
 			{
 				_userManager = value;
+			}
+		}
+
+		public ApplicationSignInManager SignInManager
+		{
+			get
+			{
+				return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
+			}
+			private set
+			{
+				_signInManager = value;
 			}
 		}
 
@@ -74,10 +90,22 @@ namespace SumStar.Controllers
 
 			// 这不会计入到为执行帐户锁定而统计的登录失败次数中
 			// 若要在多次输入错误密码的情况下触发帐户锁定，请更改为 shouldLockout: true
-			var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
+			var result = await SignInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, false);
 			switch (result)
 			{
 				case SignInStatus.Success:
+					// 写入登录操作日志
+					ApplicationUser user = await UserManager.FindByNameAsync(model.UserName);
+					string userId = user.Id;
+					var operationLog = new OperationLog
+					{
+						PageUrl = "/Account/Login",
+						Description = "用户登录",
+						CreateBy = userId,
+						CreateTime = DateTime.Now
+					};
+					DbContext.OperationLogs.Add(operationLog);
+					await DbContext.SaveChangesAsync();
 					return RedirectToLocal(returnUrl);
 				case SignInStatus.LockedOut:
 					return View("Lockout");
@@ -106,8 +134,8 @@ namespace SumStar.Controllers
 			{
 				var user = new ApplicationUser
 				{
-					UserName = model.Email,
-					Email = model.Email
+					UserName = model.UserName,
+					Remark = model.Remark
 				};
 				var result = await UserManager.CreateAsync(user, model.Password);
 				if (result.Succeeded)
@@ -124,48 +152,6 @@ namespace SumStar.Controllers
 		}
 
 		//
-		// GET: /Account/ResetPassword
-		[AllowAnonymous]
-		public ActionResult ResetPassword(string code)
-		{
-			return code == null ? View("Error") : View();
-		}
-
-		//
-		// POST: /Account/ResetPassword
-		[HttpPost]
-		[AllowAnonymous]
-		[ValidateAntiForgeryToken]
-		public async Task<ActionResult> ResetPassword(ResetPasswordViewModel model)
-		{
-			if (!ModelState.IsValid)
-			{
-				return View(model);
-			}
-			var user = await UserManager.FindByNameAsync(model.Email);
-			if (user == null)
-			{
-				// 请不要显示该用户不存在
-				return RedirectToAction("ResetPasswordConfirmation", "Account");
-			}
-			var result = await UserManager.ResetPasswordAsync(user.Id, model.Code, model.Password);
-			if (result.Succeeded)
-			{
-				return RedirectToAction("ResetPasswordConfirmation", "Account");
-			}
-			AddErrors(result);
-			return View();
-		}
-
-		//
-		// GET: /Account/ResetPasswordConfirmation
-		[AllowAnonymous]
-		public ActionResult ResetPasswordConfirmation()
-		{
-			return View();
-		}
-
-		//
 		// POST: /Account/LogOff
 		[HttpPost]
 		[ValidateAntiForgeryToken]
@@ -179,6 +165,12 @@ namespace SumStar.Controllers
 		{
 			if (disposing)
 			{
+				if (_dbContext != null)
+				{
+					_dbContext.Dispose();
+					_dbContext = null;
+				}
+
 				if (_userManager != null)
 				{
 					_userManager.Dispose();

@@ -5,9 +5,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SumStar.Models
 {
-	[Table("T_OperationLog")]
-	[DisplayName("操作日志")]
-	public class OperationLog
+	[Table("T_ImageLink")]
+	[DisplayName("图片链接")]
+	public class ImageLink
 	{
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public int Id
@@ -16,25 +16,40 @@ namespace SumStar.Models
 			set;
 		}
 
-		[Display(Name = "页面地址")]
-		[Required]
-		[StringLength(200)]
-		public string PageUrl
+		[Display(Name = "显示顺序")]
+		public int DisplayOrder
 		{
 			get;
 			set;
 		}
 
-		[Display(Name = "描述")]
+		[Display(Name = "名称")]
+		[Required]
+		[StringLength(100)]
+		public string Title
+		{
+			get;
+			set;
+		}
+
+		[Display(Name = "链接地址")]
 		[StringLength(200)]
-		public string Description
+		public string LinkUrl
+		{
+			get;
+			set;
+		}
+
+		[Display(Name = "图片地址")]
+		[StringLength(200)]
+		public string ImageUrl
 		{
 			get;
 			set;
 		}
 
 		/// <summary>
-		/// 操作人的标识。
+		/// 创建人的标识。
 		/// </summary>
 		public string CreateBy
 		{
@@ -42,7 +57,7 @@ namespace SumStar.Models
 			set;
 		}
 
-		[Display(Name = "操作人")]
+		[Display(Name = "创建人")]
 		[Required]
 		[ForeignKey("CreateBy")]
 		public virtual ApplicationUser CreateByUser
@@ -51,7 +66,7 @@ namespace SumStar.Models
 			set;
 		}
 
-		[Display(Name = "操作时间")]
+		[Display(Name = "创建时间")]
 		[DataType(DataType.DateTime)]
 		[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm:ss}")]
 		public DateTime CreateTime

@@ -1,112 +1,170 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace SumStar.Models.ViewModels
 {
-    public class ExternalLoginConfirmationViewModel
-    {
-        [Required]
-        [Display(Name = "电子邮件")]
-        public string Email { get; set; }
-    }
+	public class LoginViewModel
+	{
+		[Required]
+		[StringLength(20)]
+		[Display(Name = "用户名")]
+		public string UserName
+		{
+			get;
+			set;
+		}
 
-    public class ExternalLoginListViewModel
-    {
-        public string ReturnUrl { get; set; }
-    }
+		[Required]
+		[DataType(DataType.Password)]
+		[Display(Name = "密码")]
+		public string Password
+		{
+			get;
+			set;
+		}
 
-    public class SendCodeViewModel
-    {
-        public string SelectedProvider { get; set; }
-        public ICollection<System.Web.Mvc.SelectListItem> Providers { get; set; }
-        public string ReturnUrl { get; set; }
-        public bool RememberMe { get; set; }
-    }
+		[Display(Name = "记住我?")]
+		public bool RememberMe
+		{
+			get;
+			set;
+		}
+	}
 
-    public class VerifyCodeViewModel
-    {
-        [Required]
-        public string Provider { get; set; }
+	public class RegisterViewModel
+	{
+		public string Id
+		{
+			get;
+			set;
+		}
 
-        [Required]
-        [Display(Name = "代码")]
-        public string Code { get; set; }
-        public string ReturnUrl { get; set; }
+		[Required]
+		[Display(Name = "角色")]
+		public string RoleName
+		{
+			get;
+			set;
+		}
 
-        [Display(Name = "记住此浏览器?")]
-        public bool RememberBrowser { get; set; }
+		[Required]
+		[StringLength(20)]
+		[Display(Name = "用户名")]
+		public string UserName
+		{
+			get;
+			set;
+		}
 
-        public bool RememberMe { get; set; }
-    }
+		[Required]
+		[StringLength(100, ErrorMessage = "{0} 必须至少包含 {2} 个字符。", MinimumLength = 6)]
+		[DataType(DataType.Password)]
+		[Display(Name = "密码")]
+		public string Password
+		{
+			get;
+			set;
+		}
 
-    public class ForgotViewModel
-    {
-        [Required]
-        [Display(Name = "电子邮件")]
-        public string Email { get; set; }
-    }
+		[DataType(DataType.Password)]
+		[Display(Name = "确认密码")]
+		[Compare("Password", ErrorMessage = "密码和确认密码不匹配。")]
+		public string ConfirmPassword
+		{
+			get;
+			set;
+		}
 
-    public class LoginViewModel
-    {
-        [Required]
-        [Display(Name = "电子邮件")]
-        [EmailAddress]
-        public string Email { get; set; }
+		/// <summary>
+		/// 备注
+		/// </summary>
+		[Display(Name = "备注")]
+		[StringLength(200)]
+		[DataType(DataType.MultilineText)]
+		public string Remark
+		{
+			get;
+			set;
+		}
+	}
 
-        [Required]
-        [DataType(DataType.Password)]
-        [Display(Name = "密码")]
-        public string Password { get; set; }
+	public class EditUserViewModel
+	{
+		public string Id
+		{
+			get;
+			set;
+		}
 
-        [Display(Name = "记住我?")]
-        public bool RememberMe { get; set; }
-    }
+		[Required]
+		[Display(Name = "角色")]
+		public string RoleName
+		{
+			get;
+			set;
+		}
 
-    public class RegisterViewModel
-    {
-        [Required]
-        [EmailAddress]
-        [Display(Name = "电子邮件")]
-        public string Email { get; set; }
+		[Required]
+		[StringLength(20)]
+		[Display(Name = "用户名")]
+		public string UserName
+		{
+			get;
+			set;
+		}
 
-        [Required]
-        [StringLength(100, ErrorMessage = "{0} 必须至少包含 {2} 个字符。", MinimumLength = 6)]
-        [DataType(DataType.Password)]
-        [Display(Name = "密码")]
-        public string Password { get; set; }
+		/// <summary>
+		/// 备注
+		/// </summary>
+		[Display(Name = "备注")]
+		[StringLength(200)]
+		[DataType(DataType.MultilineText)]
+		public string Remark
+		{
+			get;
+			set;
+		}
+	}
 
-        [DataType(DataType.Password)]
-        [Display(Name = "确认密码")]
-        [Compare("Password", ErrorMessage = "密码和确认密码不匹配。")]
-        public string ConfirmPassword { get; set; }
-    }
+	public class ResetPasswordViewModel
+	{
+		public string Id
+		{
+			get;
+			set;
+		}
 
-    public class ResetPasswordViewModel
-    {
-        [Required]
-        [EmailAddress]
-        [Display(Name = "电子邮件")]
-        public string Email { get; set; }
+		public string Token
+		{
+			get;
+			set;
+		}
 
-        [Required]
-        [StringLength(100, ErrorMessage = "{0} 必须至少包含 {2} 个字符。", MinimumLength = 6)]
-        [DataType(DataType.Password)]
-        [Display(Name = "密码")]
-        public string Password { get; set; }
+		[Required]
+		[StringLength(20)]
+		[Display(Name = "用户名")]
+		public string UserName
+		{
+			get;
+			set;
+		}
 
-        [DataType(DataType.Password)]
-        [Display(Name = "确认密码")]
-        [Compare("Password", ErrorMessage = "密码和确认密码不匹配。")]
-        public string ConfirmPassword { get; set; }
+		[Required]
+		[StringLength(100, ErrorMessage = "{0} 必须至少包含 {2} 个字符。", MinimumLength = 6)]
+		[DataType(DataType.Password)]
+		[Display(Name = "密码")]
+		public string Password
+		{
+			get;
+			set;
+		}
 
-        public string Code { get; set; }
-    }
-
-    public class ForgotPasswordViewModel
-    {
-        [Required]
-        [EmailAddress]
-        [Display(Name = "电子邮件")]
-        public string Email { get; set; }
-    }
+		[DataType(DataType.Password)]
+		[Display(Name = "确认密码")]
+		[Compare("Password", ErrorMessage = "密码和确认密码不匹配。")]
+		public string ConfirmPassword
+		{
+			get;
+			set;
+		}
+	}
 }
