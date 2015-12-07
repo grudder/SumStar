@@ -116,42 +116,6 @@ namespace SumStar.Controllers
 		}
 
 		//
-		// GET: /Account/Register
-		[AllowAnonymous]
-		public ActionResult Register()
-		{
-			return View();
-		}
-
-		//
-		// POST: /Account/Register
-		[HttpPost]
-		[AllowAnonymous]
-		[ValidateAntiForgeryToken]
-		public async Task<ActionResult> Register(RegisterViewModel model)
-		{
-			if (ModelState.IsValid)
-			{
-				var user = new ApplicationUser
-				{
-					UserName = model.UserName,
-					Remark = model.Remark
-				};
-				var result = await UserManager.CreateAsync(user, model.Password);
-				if (result.Succeeded)
-				{
-					await SignInManager.SignInAsync(user, false, false);
-					
-					return RedirectToAction("Index", "Home");
-				}
-				AddErrors(result);
-			}
-
-			// 如果我们进行到这一步时某个地方出错，则重新显示表单
-			return View(model);
-		}
-
-		//
 		// POST: /Account/LogOff
 		[HttpPost]
 		[ValidateAntiForgeryToken]
@@ -192,13 +156,7 @@ namespace SumStar.Controllers
 		// 用于在添加外部登录名时提供 XSRF 保护
 		private const string XsrfKey = "XsrfId";
 
-		private IAuthenticationManager AuthenticationManager
-		{
-			get
-			{
-				return HttpContext.GetOwinContext().Authentication;
-			}
-		}
+		private IAuthenticationManager AuthenticationManager => HttpContext.GetOwinContext().Authentication;
 
 		private void AddErrors(IdentityResult result)
 		{
