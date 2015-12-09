@@ -186,8 +186,9 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="DataAccess\ApplicationDbContext.cs" />
+    <Compile Include="Helper\OrderByExtension.cs" />
     <Compile Include="Models\ContentType.cs" />
-    <Compile Include="Models\DataTable.cs" />
+    <Compile Include="Helper\TableDataSource.cs" />
     <Compile Include="Models\ImageLink.cs" />
     <Compile Include="Models\Article.cs" />
     <Compile Include="Models\Category.cs" />
@@ -248,6 +249,7 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Content\images\Sorting icons.psd" />
     <None Include="Properties\PublishProfiles\IIS部署.pubxml" />
+    <Content Include="Scripts\jquery.dataTables.zhCn.json" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\dataTables.bootstrap.js" />
     <Content Include="Scripts\dataTables.bootstrap.min.js" />

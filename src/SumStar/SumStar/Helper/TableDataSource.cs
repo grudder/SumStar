@@ -3,19 +3,17 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
 using System.Web;
 
 using Newtonsoft.Json;
 
-namespace SumStar.Models
+namespace SumStar.Helper
 {
 	/// <summary>
-	/// datatables控件所需的数据表格。
+	/// datatables分页表格的数据源。
 	/// </summary>
 	/// <typeparam name="TEntity">实体类型。</typeparam>
-	/// <typeparam name="TId">标识类型。</typeparam>
-	public class DataTable<TEntity, TId> where TEntity : class
+	public class TableDataSource<TEntity> where TEntity : class
 	{
 		/// <summary>
 		/// The draw counter that this object is a response to.
@@ -64,7 +62,7 @@ namespace SumStar.Models
 		/// <param name="dbSet">数据集。</param>
 		/// <param name="predicate">查询断言。</param>
 		/// <returns>请求的分页数据。</returns>
-		public static DataTable<TEntity, TId> FromRequest(HttpRequestBase request,
+		public static TableDataSource<TEntity> FromRequest(HttpRequestBase request,
 			IDbSet<TEntity> dbSet, Expression<Func<TEntity, bool>> predicate)
 		{
 			int draw = int.Parse(request.Params["draw"]);
@@ -74,7 +72,7 @@ namespace SumStar.Models
 			string orderColumnName = request.Params["columns[" + orderColumnIndex + "][data]"];
 			string orderDir = request.Params["order[0][dir]"];
 
-			var dataTable = new DataTable<TEntity, TId>
+			var dataTable = new TableDataSource<TEntity>
 			{
 				Draw = draw
 			};
@@ -92,8 +90,8 @@ namespace SumStar.Models
 			{
 				IQueryable<TEntity> query = dbSet.Where(predicate);
 				query = (orderDir == "desc")
-					? query.Where(predicate).OrderByDescending(i => GetProperty(i, orderColumnName))
-					: query.Where(predicate).OrderBy(i => GetProperty(i, orderColumnName));
+					? query.OrderByDescending(orderColumnName)
+					: query.OrderBy(orderColumnName);
 				data = query.Skip(start).Take(length).ToList();
 
 				int count = data.Count;
@@ -103,18 +101,6 @@ namespace SumStar.Models
 			}
 
 			return dataTable;
-		}
-
-		/// <summary>
-		/// 获取指定名称的对象属性。
-		/// </summary>
-		/// <param name="obj">对象。</param>
-		/// <param name="propertyName">属性名称。</param>
-		/// <returns>指定名称的对象属性。</returns>
-		private static object GetProperty(object obj, string propertyName)
-		{
-			PropertyInfo propertyInfo = obj.GetType().GetProperty(propertyName);
-			return propertyInfo.GetValue(obj, null);
 		}
 	}
 }

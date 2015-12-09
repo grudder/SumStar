@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
@@ -11,6 +14,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Newtonsoft.Json;
 
 using SumStar.DataAccess;
+using SumStar.Helper;
 using SumStar.Models;
 using SumStar.Models.ViewModels;
 using SumStar.Services;
@@ -53,32 +57,56 @@ namespace SumStar.Controllers
 			return View();
 		}
 
-		// GET: Categories/GetChildTreeNodes
-		public ActionResult GetChildTreeNodes(string controller = "Categories", string action = "List")
-        {
-            string id = Request["id"];
-            int? categoryId = string.IsNullOrEmpty(id) ? null : (int?)int.Parse(id);
+		// GET: Categories/GetChildTreeNodes/5
+		public ActionResult GetChildTreeNodes(int? id, string controller = "Categories", string action = "List")
+		{
+			IList<ZTreeNode> treeNodes = CategoryService.GetChildTreeNodes(id, controller, action);
+			string json = JsonConvert.SerializeObject(
+				treeNodes,
+				new JsonSerializerSettings
+				{
+					NullValueHandling = NullValueHandling.Ignore
+				});
 
-            List<ZTreeNode> treeNodes = CategoryService.GetChildTreeNodes(categoryId, controller, action);
-            string json = JsonConvert.SerializeObject(
-                treeNodes,
-                new JsonSerializerSettings
-                {
-                    NullValueHandling = NullValueHandling.Ignore
-                });
+			return Content(json);
+		}
 
-            return Content(json);
-        }
+		// GET: Categories/GetChildCategories/5
+		public ActionResult GetChildCategories(int? id)
+		{
+			if (id == 0)
+			{
+				id = null;
+			}
+			Expression<Func<Category, bool>> predicate = i => i.ParentId == id;
+			var data = TableDataSource<Category>.FromRequest(HttpContext.Request, DbContext.Categories, predicate);
+			string json = JsonConvert.SerializeObject(
+				data,
+				new JsonSerializerSettings
+				{
+					NullValueHandling = NullValueHandling.Ignore
+				});
+
+			return Content(json);
+		}
 
 		// GET: Categories/Create/5
 		public ActionResult Create(int? id)
 		{
-			ViewBag.ParentId = new SelectList(DbContext.Categories, "Id", "Name");
+			var allCategories = DbContext.Categories.ToList();
+			var topCategory = new Category
+			{
+				Id = 0,
+				Name = "【网站栏目】"
+			};
+			allCategories.Insert(0, topCategory);
+			ViewBag.ParentId = new SelectList(allCategories, "Id", "Name");
+			
 			var category = new Category
 			{
 				ParentId = id
 			};
-            return View(category);
+			return View(category);
 		}
 
 		// POST: Categories/Create
@@ -89,16 +117,28 @@ namespace SumStar.Controllers
 		public ActionResult Create(
 			[Bind(Include = "Id,ParentId,DisplayOrder,Name,ContentType,Remark")] Category category)
 		{
+			category.CreateBy = HttpContext.User.Identity.GetUserId();
+			category.CreateTime = DateTime.Now;
+
 			if (ModelState.IsValid)
 			{
-				category.CreateBy = HttpContext.User.Identity.GetUserId();
-				category.CreateTime = DateTime.Now;
-                DbContext.Categories.Add(category);
+				if (category.ParentId == 0)
+				{
+					category.ParentId = null;
+				}
+				DbContext.Categories.Add(category);
 				DbContext.SaveChanges();
 				return RedirectToAction("Index");
 			}
-			
-			ViewBag.ParentId = new SelectList(DbContext.Categories, "Id", "Name", category.ParentId);
+
+			var allCategories = DbContext.Categories.ToList();
+			var topCategory = new Category
+			{
+				Id = 0,
+				Name = "【网站栏目】"
+			};
+			allCategories.Insert(0, topCategory);
+			ViewBag.ParentId = new SelectList(allCategories, "Id", "Name", category.ParentId);
 			return View(category);
 		}
 

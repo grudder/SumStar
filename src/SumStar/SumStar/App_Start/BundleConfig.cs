@@ -1,5 +1,4 @@
-﻿using System.Web;
-using System.Web.Optimization;
+﻿using System.Web.Optimization;
 
 namespace SumStar
 {
@@ -9,30 +8,30 @@ namespace SumStar
 		public static void RegisterBundles(BundleCollection bundles)
 		{
 			bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-						"~/Scripts/jquery-{version}.js"));
+				"~/Scripts/jquery-{version}.js"));
 
 			bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
-						"~/Scripts/jquery.validate*"));
+				"~/Scripts/jquery.validate*"));
 
 			// 使用要用于开发和学习的 Modernizr 的开发版本。然后，当你做好
 			// 生产准备时，请使用 http://modernizr.com 上的生成工具来仅选择所需的测试。
 			bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
-						"~/Scripts/modernizr-*"));
+				"~/Scripts/modernizr-*"));
 
 			bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-					  "~/Scripts/bootstrap.js",
-					  "~/Scripts/respond.js"));
+				"~/Scripts/bootstrap.js",
+				"~/Scripts/respond.js"));
 
 			bundles.Add(new ScriptBundle("~/bundles/dataTables").Include(
-					  "~/Scripts/jquery.dataTables",
-					  "~/Scripts/dataTables.bootstrap.js"));
+				"~/Scripts/jquery.dataTables.js",
+				"~/Scripts/dataTables.bootstrap.js"));
 
 			bundles.Add(new StyleBundle("~/Content/css").Include(
-					  "~/Content/bootstrap.css",
-					  "~/Content/site.css"));
+				"~/Content/bootstrap.css",
+				"~/Content/site.css"));
 
 			bundles.Add(new StyleBundle("~/Content/css/dataTables").Include(
-					  "~/Content/dataTables.bootstrap.css"));
+				"~/Content/dataTables.bootstrap.css"));
 		}
 	}
 }

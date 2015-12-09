@@ -31,6 +31,10 @@ namespace SumStar.Services
 				return new List<ZTreeNode> { rootNode };
 			}
 
+			if (categoryId == 0)
+			{
+				categoryId = null;
+			}
 			var query = from category in _dbContext.Categories
 						where category.ParentId == categoryId
 						orderby category.DisplayOrder
