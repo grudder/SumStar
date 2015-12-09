@@ -39,7 +39,7 @@ namespace SumStar.Controllers
 		// GET: OperationLogs
 		public ActionResult Index(int? pageSize, int? page)
 		{
-			var query = from log in DbContext.OperationLogs
+		   var query = from log in DbContext.OperationLogs
 				orderby log.CreateTime descending
 				select log;
 			// 分页处理

@@ -7,7 +7,7 @@
     <title>@ViewBag.Title - 群星集团</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-
+	@RenderSection("header", false)
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -44,6 +44,6 @@
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
+    @RenderSection("scripts", false)
 </body>
 </html>

@@ -1,70 +1,95 @@
 ﻿@model IEnumerable<SumStar.Models.Category>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "栏目管理";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
-
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.CreateByUser.Remark)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Parent.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DisplayOrder)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ContentType)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Remark)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CreateTime)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.CreateByUser.Remark)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Parent.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DisplayOrder)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ContentType)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Remark)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CreateTime)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
+@section header
+{
+	@Styles.Render("~/Content/css/dataTables")
 }
 
-</table>
+<h2>@ViewBag.Title</h2>
+
+<div class="row">
+    <div class="col-md-3">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h3 class="panel-title">
+                            @ViewBag.Title
+                        </h3>
+                    </div>
+                </div>
+            </div>
+            <small>请点击“+”打开下一级目录，并点击右侧图片列表获取详细信息</small>
+            <div class="panel-body panel-body-tree">
+                <ul id="treeCategory" class="ztree">
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-9">
+		<p>
+			@Html.ActionLink("新增", "Create", null, new {id = "link-create"})
+		</p>
+	    <table class="table table-striped table-hover">
+		    <thead>
+				<tr>
+					<th>
+						名称
+					</th>
+					<th>
+						内容类型
+					</th>
+					<th>
+						备注
+					</th>
+					<th>
+						操作
+					</th>
+				</tr>
+		    </thead>
+		    <tbody>
+		    </tbody>
+	    </table>
+    </div>
+</div>
+
+@section scripts
+{
+	@Scripts.Render("~/bundles/dataTables")
+    <script type="text/javascript" src='@Url.Content("~/Scripts/jquery.ztree.all-3.5.min.js")'></script>
+    <script type="text/javascript">
+        $(function() {
+            var firstAsyncSuccessFlag = false;
+            var setting = {
+                async: {
+                    enable: true,
+                    url: '@Url.Action("GetChildTreeNodes", "Categories")',
+                    autoParam: ["id"]
+                },
+                callback: {
+                    onAsyncSuccess: function (event, treeId, msg) {
+                        if (firstAsyncSuccessFlag === false) {
+                            //调用默认展开第一个结点
+                            var treeObj = $.fn.zTree.getZTreeObj("treeCategory");
+                            var nodes = treeObj.getNodes();
+                            treeObj.expandNode(nodes[0], true);
+                            treeObj.selectNode(nodes[0]);
+
+                            firstAsyncSuccessFlag = true;
+                        }
+                    },
+                    onClick: function (event, treeId, treeNode) {
+                    	$("#link-create").attr("href", '@Url.Action("Create")/' + treeNode.id);
+                    }
+                }
+            };
+
+            $.fn.zTree.init($("#treeCategory"), setting);
+        });
+    </script>
+}

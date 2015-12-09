@@ -1,19 +1,27 @@
-﻿using System.Data.Entity;
-using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Data.Entity;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
 
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
+
+using Newtonsoft.Json;
 
 using SumStar.DataAccess;
 using SumStar.Models;
+using SumStar.Models.ViewModels;
+using SumStar.Services;
 
 namespace SumStar.Controllers
 {
 	public class CategoriesController : Controller
 	{
 		private ApplicationDbContext _dbContext;
+
+		private readonly CategoryService _categoryService;
 
 		public CategoriesController()
 		{
@@ -22,6 +30,7 @@ namespace SumStar.Controllers
 		public CategoriesController(ApplicationDbContext dbContext)
 		{
 			DbContext = dbContext;
+			_categoryService = new CategoryService(DbContext);
 		}
 
 		public ApplicationDbContext DbContext
@@ -36,34 +45,40 @@ namespace SumStar.Controllers
 			}
 		}
 
+		public CategoryService CategoryService => _categoryService ?? new CategoryService(DbContext);
+
 		// GET: Categories
 		public ActionResult Index()
 		{
-			var categories = DbContext.Categories.Include(c => c.CreateByUser).Include(c => c.Parent);
-			return View(categories.ToList());
-		}
-
-		// GET: Categories/Details/5
-		public ActionResult Details(int? id)
-		{
-			if (id == null)
-			{
-				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-			}
-			var category = DbContext.Categories.Find(id);
-			if (category == null)
-			{
-				return HttpNotFound();
-			}
-			return View(category);
-		}
-
-		// GET: Categories/Create
-		public ActionResult Create()
-		{
-			ViewBag.CreateBy = new SelectList(DbContext.Users, "Id", "Remark");
-			ViewBag.ParentId = new SelectList(DbContext.Categories, "Id", "Name");
 			return View();
+		}
+
+		// GET: Categories/GetChildTreeNodes
+		public ActionResult GetChildTreeNodes(string controller = "Categories", string action = "List")
+        {
+            string id = Request["id"];
+            int? categoryId = string.IsNullOrEmpty(id) ? null : (int?)int.Parse(id);
+
+            List<ZTreeNode> treeNodes = CategoryService.GetChildTreeNodes(categoryId, controller, action);
+            string json = JsonConvert.SerializeObject(
+                treeNodes,
+                new JsonSerializerSettings
+                {
+                    NullValueHandling = NullValueHandling.Ignore
+                });
+
+            return Content(json);
+        }
+
+		// GET: Categories/Create/5
+		public ActionResult Create(int? id)
+		{
+			ViewBag.ParentId = new SelectList(DbContext.Categories, "Id", "Name");
+			var category = new Category
+			{
+				ParentId = id
+			};
+            return View(category);
 		}
 
 		// POST: Categories/Create
@@ -72,16 +87,17 @@ namespace SumStar.Controllers
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		public ActionResult Create(
-			[Bind(Include = "Id,ParentId,DisplayOrder,Name,ContentType,Remark,CreateBy,CreateTime")] Category category)
+			[Bind(Include = "Id,ParentId,DisplayOrder,Name,ContentType,Remark")] Category category)
 		{
 			if (ModelState.IsValid)
 			{
-				DbContext.Categories.Add(category);
+				category.CreateBy = HttpContext.User.Identity.GetUserId();
+				category.CreateTime = DateTime.Now;
+                DbContext.Categories.Add(category);
 				DbContext.SaveChanges();
 				return RedirectToAction("Index");
 			}
-
-			ViewBag.CreateBy = new SelectList(DbContext.Users, "Id", "Remark", category.CreateBy);
+			
 			ViewBag.ParentId = new SelectList(DbContext.Categories, "Id", "Name", category.ParentId);
 			return View(category);
 		}
@@ -109,7 +125,7 @@ namespace SumStar.Controllers
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		public ActionResult Edit(
-			[Bind(Include = "Id,ParentId,DisplayOrder,Name,ContentType,Remark,CreateBy,CreateTime")] Category category)
+			[Bind(Include = "Id,ParentId,DisplayOrder,Name,ContentType,Remark")] Category category)
 		{
 			if (ModelState.IsValid)
 			{
