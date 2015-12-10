@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -101,13 +100,9 @@ namespace SumStar.Controllers
 				Name = "【网站栏目】"
 			};
 			allCategories.Insert(0, topCategory);
-			ViewBag.ParentId = new SelectList(allCategories, "Id", "Name");
+			ViewBag.ParentId = new SelectList(allCategories, "Id", "Name", id);
 			
-			var category = new Category
-			{
-				ParentId = id
-			};
-			return View(category);
+			return View();
 		}
 
 		// POST: Categories/Create
@@ -123,10 +118,7 @@ namespace SumStar.Controllers
 
 			if (ModelState.IsValid)
 			{
-				if (category.ParentId == 0)
-				{
-					category.ParentId = null;
-				}
+				category.Parent = DbContext.Categories.SingleOrDefault(i => i.Id == category.ParentId);
 				DbContext.Categories.Add(category);
 				DbContext.SaveChanges();
 				return RedirectToAction("Index");
@@ -165,7 +157,7 @@ namespace SumStar.Controllers
 			allCategories.Insert(0, topCategory);
 			ViewBag.ParentId = new SelectList(allCategories, "Id", "Name", category.ParentId);
 
-			ViewBag.CreateBy = new SelectList(DbContext.Users, "Id", "Remark", category.CreateBy);
+			ViewBag.CreateBy = new SelectList(DbContext.Users, "Id", "UserName", category.CreateBy);
 			return View(category);
 		}
 
@@ -193,7 +185,7 @@ namespace SumStar.Controllers
 			allCategories.Insert(0, topCategory);
 			ViewBag.ParentId = new SelectList(allCategories, "Id", "Name", category.ParentId);
 
-			ViewBag.CreateBy = new SelectList(DbContext.Users, "Id", "Remark", category.CreateBy);
+			ViewBag.CreateBy = new SelectList(DbContext.Users, "Id", "UserName", category.CreateBy);
 			return View(category);
 		}
 
