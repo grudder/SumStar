@@ -11,6 +11,7 @@ using SumStar.Models;
 
 namespace SumStar.Controllers
 {
+	[Authorize(Roles = "SysAdmin")]
 	public class OperationLogsController : Controller
 	{
 		private ApplicationDbContext _dbContext;

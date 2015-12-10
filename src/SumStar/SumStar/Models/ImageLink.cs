@@ -5,8 +5,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SumStar.Models
 {
-	[Table("T_ImageLink")]
 	[DisplayName("图片链接")]
+	[Table("T_ImageLink")]
+	[DisplayColumn("Title")]
 	public class ImageLink
 	{
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -23,7 +24,7 @@ namespace SumStar.Models
 			set;
 		}
 
-		[Display(Name = "名称")]
+		[Display(Name = "标题")]
 		[Required]
 		[StringLength(100)]
 		public string Title
@@ -58,7 +59,6 @@ namespace SumStar.Models
 		}
 
 		[Display(Name = "创建人")]
-		[Required]
 		[ForeignKey("CreateBy")]
 		public virtual ApplicationUser CreateByUser
 		{
@@ -68,7 +68,7 @@ namespace SumStar.Models
 
 		[Display(Name = "创建时间")]
 		[DataType(DataType.DateTime)]
-		[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm:ss}")]
+		[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm:ss}", ApplyFormatInEditMode = false)]
 		public DateTime CreateTime
 		{
 			get;

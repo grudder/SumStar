@@ -26,9 +26,7 @@
 					<li>@Html.ActionLink("用户管理", "Index", "Users")</li>
 					<li>@Html.ActionLink("操作日志", "Index", "OperationLogs")</li>
 					<li>@Html.ActionLink("栏目管理", "Index", "Categories")</li>
-					<li>@Html.ActionLink("文章管理", "Index", "Articles")</li>
-                    <li>@Html.ActionLink("联系方式", "Contact", "Home")</li>
-					<li>@Html.ActionLink("管理", "Index", "Manage")</li>
+					<li>@Html.ActionLink("内容管理", "Index", "Articles")</li>
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>
@@ -36,10 +34,6 @@
     </div>
     <div class="container body-content">
         @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - 群星集团</p>
-        </footer>
     </div>
 
     @Scripts.Render("~/bundles/jquery")

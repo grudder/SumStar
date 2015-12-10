@@ -78,7 +78,7 @@
 							render: function(data, type, row) {
 								var id = row.Id;
 								var link = "<a href='@Url.Action("Edit")/" + id + "'>修改</a>";
-								link += "&nbsp;<a href='javascript: UserController.deleteUser(" + id + ")'>删除</a>";
+								link += "&nbsp;<a href='@Url.Action("Delete")/" + id + "'>删除</a>";
 								return link;
 							},
 							targets: 3

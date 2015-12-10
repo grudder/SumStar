@@ -5,8 +5,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SumStar.Models
 {
-	[Table("T_Article")]
 	[DisplayName("文章")]
+	[Table("T_Article")]
+	[DisplayColumn("Title")]
 	public class Article
 	{
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -85,7 +86,6 @@ namespace SumStar.Models
 		}
 
 		[Display(Name = "创建人")]
-		[Required]
 		[ForeignKey("CreateBy")]
 		public virtual ApplicationUser CreateByUser
 		{
@@ -95,7 +95,7 @@ namespace SumStar.Models
 
 		[Display(Name = "创建时间")]
 		[DataType(DataType.DateTime)]
-		[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm:ss}")]
+		[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm:ss}", ApplyFormatInEditMode = false)]
 		public DateTime CreateTime
 		{
 			get;

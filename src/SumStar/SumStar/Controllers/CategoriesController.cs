@@ -21,6 +21,7 @@ using SumStar.Services;
 
 namespace SumStar.Controllers
 {
+	[Authorize(Roles = "ContentAdmin")]
 	public class CategoriesController : Controller
 	{
 		private ApplicationDbContext _dbContext;
@@ -154,8 +155,17 @@ namespace SumStar.Controllers
 			{
 				return HttpNotFound();
 			}
+
+			var allCategories = DbContext.Categories.ToList();
+			var topCategory = new Category
+			{
+				Id = 0,
+				Name = "【网站栏目】"
+			};
+			allCategories.Insert(0, topCategory);
+			ViewBag.ParentId = new SelectList(allCategories, "Id", "Name", category.ParentId);
+
 			ViewBag.CreateBy = new SelectList(DbContext.Users, "Id", "Remark", category.CreateBy);
-			ViewBag.ParentId = new SelectList(DbContext.Categories, "Id", "Name", category.ParentId);
 			return View(category);
 		}
 
@@ -165,7 +175,7 @@ namespace SumStar.Controllers
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		public ActionResult Edit(
-			[Bind(Include = "Id,ParentId,DisplayOrder,Name,ContentType,Remark")] Category category)
+			[Bind(Include = "Id,ParentId,DisplayOrder,Name,ContentType,Remark,CreateBy,CreateTime")] Category category)
 		{
 			if (ModelState.IsValid)
 			{
@@ -173,8 +183,17 @@ namespace SumStar.Controllers
 				DbContext.SaveChanges();
 				return RedirectToAction("Index");
 			}
+
+			var allCategories = DbContext.Categories.ToList();
+			var topCategory = new Category
+			{
+				Id = 0,
+				Name = "【网站栏目】"
+			};
+			allCategories.Insert(0, topCategory);
+			ViewBag.ParentId = new SelectList(allCategories, "Id", "Name", category.ParentId);
+
 			ViewBag.CreateBy = new SelectList(DbContext.Users, "Id", "Remark", category.CreateBy);
-			ViewBag.ParentId = new SelectList(DbContext.Categories, "Id", "Name", category.ParentId);
 			return View(category);
 		}
 

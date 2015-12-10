@@ -5,8 +5,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SumStar.Models
 {
-	[Table("T_Category")]
 	[DisplayName("栏目")]
+	[Table("T_Category")]
+	[DisplayColumn("Name")]
 	public class Category
 	{
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
