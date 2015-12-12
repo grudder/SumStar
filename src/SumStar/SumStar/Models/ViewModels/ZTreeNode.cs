@@ -45,5 +45,12 @@ namespace SumStar.Models.ViewModels
 			get;
 			set;
 		}
+
+		[JsonProperty("contentType")]
+		public string ContentType
+		{
+			get;
+			set;
+		}
 	}
 }

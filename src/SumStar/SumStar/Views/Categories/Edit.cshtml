@@ -14,11 +14,20 @@
 		<hr/>
 		@Html.ValidationSummary(true, "", new {@class = "text-danger"})
 		@Html.HiddenFor(model => model.Id)
+		@Html.HiddenFor(model => model.ParentId)
+		@Html.HiddenFor(model => model.CreateBy)
 
 		<div class="form-group">
-			<label class="control-label col-md-2">所属栏目</label>
+            @Html.LabelFor(model => model.Parent, new { @class = "control-label col-md-2" })
 			<div class="col-md-10">
-				@Html.DropDownList("ParentId", null, new {@class = "form-control", @readonly = "readonly"})
+				@if (Model.Parent == null)
+				{
+					<input type="text" class="form-control text-box single-line valid" readonly="readonly" value="网站栏目" />
+				}
+				else
+				{
+					<input type="text" class="form-control text-box single-line" readonly="readonly" value="@Model.Parent.Name" />
+				}
 			</div>
 		</div>
 
@@ -55,9 +64,9 @@
 		</div>
 
 		<div class="form-group">
-			<label class="control-label col-md-2">创建人</label>
+            @Html.LabelFor(model => model.CreateByUser, new { @class = "control-label col-md-2" })
 			<div class="col-md-10">
-				@Html.DropDownList("CreateBy", null, new {@class = "form-control", @readonly = "readonly"})
+				<input type="text" class="form-control text-box single-line" readonly="readonly" value="@Model.CreateByUser.UserName" />
 			</div>
 		</div>
 

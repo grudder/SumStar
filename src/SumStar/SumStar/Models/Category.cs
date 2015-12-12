@@ -39,8 +39,8 @@ namespace SumStar.Models
 			set;
 		}
 
-		[Display(Name = "名称")]
 		[Required]
+		[Display(Name = "名称")]
 		[StringLength(20)]
 		public string Name
 		{
@@ -81,6 +81,7 @@ namespace SumStar.Models
 			set;
 		}
 
+		[Required]
 		[Display(Name = "创建时间")]
 		[DataType(DataType.DateTime)]
 		[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm:ss}", ApplyFormatInEditMode = false)]

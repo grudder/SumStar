@@ -177,7 +177,9 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ArticleContentsController.cs" />
     <Compile Include="Controllers\CategoriesController.cs" />
+    <Compile Include="Controllers\ContentsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\OperationLogsController.cs" />
@@ -186,11 +188,13 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="DataAccess\ApplicationDbContext.cs" />
+    <Compile Include="Helper\MyDateTimeConverter.cs" />
     <Compile Include="Helper\OrderByExtension.cs" />
     <Compile Include="Models\ContentType.cs" />
     <Compile Include="Helper\TableDataSource.cs" />
-    <Compile Include="Models\ImageLink.cs" />
-    <Compile Include="Models\Article.cs" />
+    <Compile Include="Models\Content.cs" />
+    <Compile Include="Models\ImageContent.cs" />
+    <Compile Include="Models\ArticleContent.cs" />
     <Compile Include="Models\Category.cs" />
     <Compile Include="Models\OperationLog.cs" />
     <Compile Include="Models\ViewModels\AccountViewModels.cs" />
@@ -300,6 +304,11 @@
     <Content Include="Views\Categories\Delete.cshtml" />
     <Content Include="Views\Categories\Edit.cshtml" />
     <Content Include="Views\Categories\Index.cshtml" />
+    <Content Include="Views\Contents\Index.cshtml" />
+    <Content Include="Views\ArticleContents\Create.cshtml" />
+    <Content Include="Views\ArticleContents\Delete.cshtml" />
+    <Content Include="Views\ArticleContents\Edit.cshtml" />
+    <Content Include="Views\ArticleContents\Index.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

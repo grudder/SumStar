@@ -15,7 +15,7 @@ namespace SumStar.Services
 			_dbContext = dbContext;
 		}
 
-		public List<ZTreeNode> GetChildTreeNodes(int? categoryId, string controller = "Categories", string action = "List")
+		public List<ZTreeNode> GetChildTreeNodes(int? categoryId)
 		{
 			if (categoryId == null)
 			{
@@ -23,7 +23,6 @@ namespace SumStar.Services
 				{
 					Id = 0,
 					Name = "【所有栏目】",
-					Href = $"/{controller}/{action}/{0}",
 					IsParent = true,
 					Open = true
 				};
@@ -42,15 +41,10 @@ namespace SumStar.Services
 						{
 							Id = category.Id,
 							Name = category.Name,
-							IsParent = true
+							IsParent = true,
+							ContentType = category.ContentType.ToString()
 						};
-			var treeNodes = query.ToList();
-			foreach (ZTreeNode treeNode in treeNodes)
-			{
-				treeNode.Href = $"/{controller}/{action}/{treeNode.Id}";
-			}
-
-			return treeNodes;
+			return query.ToList();
 		}
 	}
 }

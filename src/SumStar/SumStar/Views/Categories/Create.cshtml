@@ -15,7 +15,7 @@
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
-			<label class="control-label col-md-2">所属栏目</label>
+            @Html.LabelFor(model => model.ParentId, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.DropDownList("ParentId", null, new { @class = "form-control", @readonly = "readonly" })
             </div>

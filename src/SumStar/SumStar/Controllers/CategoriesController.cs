@@ -58,9 +58,9 @@ namespace SumStar.Controllers
 		}
 
 		// GET: Categories/GetChildTreeNodes/5
-		public ActionResult GetChildTreeNodes(int? id, string controller = "Categories", string action = "List")
+		public ActionResult GetChildTreeNodes(int? id)
 		{
-			IList<ZTreeNode> treeNodes = CategoryService.GetChildTreeNodes(id, controller, action);
+			IList<ZTreeNode> treeNodes = CategoryService.GetChildTreeNodes(id);
 			string json = JsonConvert.SerializeObject(
 				treeNodes,
 				new JsonSerializerSettings
@@ -147,17 +147,7 @@ namespace SumStar.Controllers
 			{
 				return HttpNotFound();
 			}
-
-			var allCategories = DbContext.Categories.ToList();
-			var topCategory = new Category
-			{
-				Id = 0,
-				Name = "【网站栏目】"
-			};
-			allCategories.Insert(0, topCategory);
-			ViewBag.ParentId = new SelectList(allCategories, "Id", "Name", category.ParentId);
-
-			ViewBag.CreateBy = new SelectList(DbContext.Users, "Id", "UserName", category.CreateBy);
+			
 			return View(category);
 		}
 
@@ -171,21 +161,15 @@ namespace SumStar.Controllers
 		{
 			if (ModelState.IsValid)
 			{
+				if (category.ParentId == 0)
+				{
+					category.ParentId = null;
+				}
 				DbContext.Entry(category).State = EntityState.Modified;
 				DbContext.SaveChanges();
 				return RedirectToAction("Index");
 			}
-
-			var allCategories = DbContext.Categories.ToList();
-			var topCategory = new Category
-			{
-				Id = 0,
-				Name = "【网站栏目】"
-			};
-			allCategories.Insert(0, topCategory);
-			ViewBag.ParentId = new SelectList(allCategories, "Id", "Name", category.ParentId);
-
-			ViewBag.CreateBy = new SelectList(DbContext.Users, "Id", "UserName", category.CreateBy);
+			
 			return View(category);
 		}
 

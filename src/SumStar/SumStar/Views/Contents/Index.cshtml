@@ -1,11 +1,11 @@
 ﻿@{
-	ViewBag.Title = "栏目管理";
+	ViewBag.Title = "内容管理";
 	Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 @section header
 {
-	<link href="~/Content/zTree/zTreeStyle.css" rel="stylesheet" type="text/css"/>
+	<link href="~/Content/zTree/zTreeStyle.css" rel="stylesheet" type="text/css" />
 	@Styles.Render("~/Content/css/dataTables")
 }
 
@@ -24,23 +24,22 @@
 				</div>
 			</div>
 			<div class="panel-body panel-body-tree">
-				<ul id="treeCategory" class="ztree">
-				</ul>
+				<ul id="treeCategory" class="ztree"></ul>
 			</div>
 		</div>
 	</div>
 	<div class="col-md-9">
 		<p>
-			@Html.ActionLink("新增", "Create", null, new {id = "link-create"})
+			@Html.ActionLink("新增", "Create", null, new { id = "link-create" })
 		</p>
-		<table id="table-category" class="table table-striped table-hover">
+		<table id="table-content" class="table table-striped table-hover">
 			<thead>
-			<tr>
-				<th>名称</th>
-				<th>内容类型</th>
-				<th>显示顺序</th>
-				<th>操作</th>
-			</tr>
+				<tr>
+					<th>标题</th>
+					<th>显示顺序</th>
+					<th>创建时间</th>
+					<th>操作</th>
+				</tr>
 			</thead>
 		</table>
 	</div>
@@ -52,13 +51,19 @@
 	<script type="text/javascript" src='@Url.Content("~/Scripts/jquery.ztree.all-3.5.min.js")'></script>
 	<script type="text/javascript">
 		$(function() {
-			// 显示栏目表格
-			var showCategoryTable = function(categoryId) {
-				var url = '@Url.Action("GetChildCategories", "Categories")';
-				if (categoryId != null) {
-					url += "/" + categoryId;
+			// 显示内容表格
+			var showContentTable = function(categoryId) {
+				if (categoryId === null || categoryId === 0) {
+					$("#link-create").hide();
+				} else {
+					$("#link-create").show();
 				}
-				$("#table-category").DataTable({
+
+				var url = '@Url.Action("GetByCategory", "Contents")';
+				if (categoryId != null) {
+					url += "?categoryId=" + categoryId;
+				}
+				$("#table-content").DataTable({
 					language: {
 						url: '@Url.Content("~/Scripts/jquery.dataTables.zhCn.json")'
 					},
@@ -70,9 +75,9 @@
 					serverSide: true,
 					ajax: url,
 					columns: [
-						{ data: "Name" },
-						{ data: "ContentType" },
+						{ data: "Title" },
 						{ data: "DisplayOrder" },
+						{ data: "CreateTime" },
 						{ data: null, orderable: false }
 					],
 					columnDefs: [
@@ -86,7 +91,7 @@
 							targets: 3
 						}
 					],
-					order: [[2, "desc"]] // 默认排序
+					order: [[1, "desc"]] // 默认排序
 				});
 			};
 
@@ -111,15 +116,22 @@
 					},
 					onClick: function(event, treeId, treeNode) {
 						var categoryId = treeNode.id;
-						$("#link-create").attr("href", '@Url.Action("Create")/' + categoryId);
-						showCategoryTable(categoryId);
+						var contentType = treeNode.contentType;
+						if (contentType) {
+							$("#link-create").attr("href", '@Url.Action("Create")?categoryId=' + categoryId);
+							$("#link-create").show();
+						}
+						else {
+							$("#link-create").hide();
+						}
+						showContentTable(categoryId);
 					}
 				}
 			};
 
 			$.fn.zTree.init($("#treeCategory"), setting);
 
-			showCategoryTable(null);
+			showContentTable(null);
 		});
 	</script>
 }

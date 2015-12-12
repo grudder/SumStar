@@ -1,7 +1,7 @@
-﻿@model SumStar.Models.Category
+﻿@model SumStar.Models.ArticleContent
 
 @{
-    ViewBag.Title = "删除栏目";
+    ViewBag.Title = "删除文章内容";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -12,11 +12,19 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Parent)
+            @Html.DisplayNameFor(model => model.Category)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Parent.Name)
+            @Html.DisplayFor(model => model.Category.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Title)
         </dd>
 
         <dt>
@@ -28,29 +36,29 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Name)
+            @Html.DisplayNameFor(model => model.TopicImage)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Name)
+            @Html.DisplayFor(model => model.TopicImage)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.ContentType)
+            @Html.DisplayNameFor(model => model.Author)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.ContentType)
+            @Html.DisplayFor(model => model.Author)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Remark)
+            @Html.DisplayNameFor(model => model.Content)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Remark)
+            @Html.DisplayFor(model => model.Content)
         </dd>
-		
+
         <dt>
             @Html.DisplayNameFor(model => model.CreateByUser)
         </dt>
@@ -66,15 +74,14 @@
         <dd>
             @Html.DisplayFor(model => model.CreateTime)
         </dd>
-
     </dl>
 
     @using (Html.BeginForm()) {
         @Html.AntiForgeryToken()
-
+		
         <div class="form-actions no-color">
             <input type="submit" value="删除" class="btn btn-primary" />
-			@Html.ActionLink("返回", "Index", null, new {@class = "btn btn-default"})
+			@Html.ActionLink("返回", "Index", "Contents", new {categoryId = @Model.CategoryId}, new {@class = "btn btn-default"})
         </div>
     }
 </div>

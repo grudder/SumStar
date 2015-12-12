@@ -16,8 +16,8 @@ namespace SumStar.Models
 			set;
 		}
 
-		[Display(Name = "页面地址")]
 		[Required]
+		[Display(Name = "页面地址")]
 		[StringLength(200)]
 		public string PageUrl
 		{
@@ -51,6 +51,7 @@ namespace SumStar.Models
 			set;
 		}
 
+		[Required]
 		[Display(Name = "操作时间")]
 		[DataType(DataType.DateTime)]
 		[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm:ss}")]

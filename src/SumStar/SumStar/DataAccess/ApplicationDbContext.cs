@@ -14,19 +14,31 @@ namespace SumStar.DataAccess
 		{
 		}
 
+		public DbSet<OperationLog> OperationLogs
+		{
+			get;
+			set;
+		}
+
 		public DbSet<Category> Categories
 		{
 			get;
 			set;
 		}
 
-		public DbSet<Article> Articles
+		public DbSet<Content> Contents
 		{
 			get;
 			set;
 		}
 
-		public DbSet<OperationLog> OperationLogs
+		public DbSet<ArticleContent> ArticleContents
+		{
+			get;
+			set;
+		}
+
+		public DbSet<ImageContent> ImageContents
 		{
 			get;
 			set;
@@ -41,6 +53,19 @@ namespace SumStar.DataAccess
 		{
 			// 对外键不进行级联删除
 			modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
+
+			modelBuilder.Entity<ArticleContent>()
+				.Map(m =>
+				{
+					m.MapInheritedProperties();
+					m.ToTable("T_ArticleContent");
+				});
+			modelBuilder.Entity<ImageContent>()
+				.Map(m =>
+				{
+					m.MapInheritedProperties();
+					m.ToTable("T_ImageContent");
+				});
 
 			base.OnModelCreating(modelBuilder);
 		}

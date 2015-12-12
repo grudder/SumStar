@@ -8,8 +8,8 @@
 		Article,
 
 		/// <summary>
-		/// 图片链接
+		/// 图片
 		/// </summary>
-		ImageLink
+		Image
 	}
 }
