@@ -55,6 +55,7 @@ namespace SumStar.Controllers
 		// 详细信息，请参阅 http://go.microsoft.com/fwlink/?LinkId=317598。
 		[HttpPost]
 		[ValidateAntiForgeryToken]
+		[ValidateInput(false)]
 		public ActionResult Create([Bind(Include = "Id,CategoryId,Title,DisplayOrder,TopicImage,Author,Content")] ArticleContent articleContent)
 		{
 			articleContent.CreateBy = HttpContext.User.Identity.GetUserId();
@@ -91,6 +92,7 @@ namespace SumStar.Controllers
 		// 详细信息，请参阅 http://go.microsoft.com/fwlink/?LinkId=317598。
 		[HttpPost]
 		[ValidateAntiForgeryToken]
+		[ValidateInput(false)]
 		public ActionResult Edit([Bind(Include = "Id,CategoryId,Title,DisplayOrder,CreateBy,CreateTime,TopicImage,Author,Content")] ArticleContent
 				articleContent)
 		{

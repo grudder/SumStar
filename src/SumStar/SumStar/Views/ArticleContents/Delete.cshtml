@@ -55,8 +55,8 @@
             @Html.DisplayNameFor(model => model.Content)
         </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Content)
+        <dd id="Content">
+            @Html.Raw(Model.Content)
         </dd>
 
         <dt>
@@ -85,3 +85,12 @@
         </div>
     }
 </div>
+
+@section Scripts {
+	@Scripts.Render("~/bundles/UEditor")
+	<script type="text/javascript">
+		$(function () {
+			uParse("#Content");
+		});
+	</script>
+}
