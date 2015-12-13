@@ -4,17 +4,20 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 
 using SumStar.Helper;
 
 namespace SumStar.Models
 {
+	/// <summary>
+	/// 采用【TPT】方式实现继承关系
+	/// </summary>
 	[DisplayName("内容")]
+	[Table("T_Content")]
 	[DisplayColumn("Title")]
-	public abstract class Content
+	public class Content
 	{
-		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+		[Key]
 		public int Id
 		{
 			get;

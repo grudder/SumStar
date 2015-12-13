@@ -46,7 +46,8 @@
             <div class="col-md-10">
 				@Html.HiddenFor(model => model.TopicImage)
 				<img width="120" height="90" src="@Model.TopicImage" />
-				<input type="file" name="topicImageFile" accept="image/gif, image/jpeg, image/png" />
+				<input type="file" id="topicImageFile" name="topicImageFile" accept="image/gif, image/jpeg, image/png" />
+                @Html.ValidationMessageFor(model => model.TopicImage, "", new { @class = "text-danger" })
             </div>
         </div>
 

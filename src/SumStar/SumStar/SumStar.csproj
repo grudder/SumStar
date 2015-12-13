@@ -171,6 +171,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\ImageContentsController.cs" />
     <Compile Include="UEditor\Config.cs" />
     <Compile Include="UEditor\ConfigHandler.cs" />
     <Compile Include="UEditor\CrawlerHandler.cs" />
@@ -591,8 +592,10 @@
     <Content Include="Views\ArticleContents\Create.cshtml" />
     <Content Include="Views\ArticleContents\Delete.cshtml" />
     <Content Include="Views\ArticleContents\Edit.cshtml" />
-    <Content Include="Views\ArticleContents\Index.cshtml" />
     <Content Include="UEditor\UEditorHandler.ashx" />
+    <Content Include="Views\ImageContents\Create.cshtml" />
+    <Content Include="Views\ImageContents\Delete.cshtml" />
+    <Content Include="Views\ImageContents\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

@@ -1,0 +1,79 @@
+﻿@model SumStar.Models.ImageContent
+
+@{
+    ViewBag.Title = "删除图片内容";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<h3>你确认要删除吗？</h3>
+<div>
+	<hr/>
+	<dl class="dl-horizontal">
+		<dt>
+			@Html.DisplayNameFor(model => model.Category)
+		</dt>
+
+		<dd>
+			@Html.DisplayFor(model => model.Category.Name)
+		</dd>
+
+		<dt>
+			@Html.DisplayNameFor(model => model.Title)
+		</dt>
+
+		<dd>
+			@Html.DisplayFor(model => model.Title)
+		</dd>
+
+		<dt>
+			@Html.DisplayNameFor(model => model.DisplayOrder)
+		</dt>
+
+		<dd>
+			@Html.DisplayFor(model => model.DisplayOrder)
+		</dd>
+
+		<dt>
+			@Html.DisplayNameFor(model => model.LinkUrl)
+		</dt>
+
+		<dd>
+			@Html.DisplayFor(model => model.LinkUrl)
+		</dd>
+
+		<dt>
+			@Html.DisplayNameFor(model => model.ImageUrl)
+		</dt>
+
+		<dd>
+			<img width="120" height="90" src="@Model.ImageUrl"/>
+		</dd>
+
+		<dt>
+			@Html.DisplayNameFor(model => model.CreateByUser)
+		</dt>
+
+		<dd>
+			@Html.DisplayFor(model => model.CreateByUser.UserName)
+		</dd>
+
+		<dt>
+			@Html.DisplayNameFor(model => model.CreateTime)
+		</dt>
+
+		<dd>
+			@Html.DisplayFor(model => model.CreateTime)
+		</dd>
+	</dl>
+
+	@using (Html.BeginForm()) {
+		@Html.AntiForgeryToken()
+
+		<div class="form-actions no-color">
+			<input type="submit" value="删除" class="btn btn-primary"/>
+			@Html.ActionLink("返回", "Index", "Contents", new {categoryId = @Model.CategoryId}, new {@class = "btn btn-default"})
+		</div>
+	}
+</div>

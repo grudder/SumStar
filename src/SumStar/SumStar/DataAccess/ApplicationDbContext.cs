@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
 
 using Microsoft.AspNet.Identity.EntityFramework;
@@ -54,18 +55,9 @@ namespace SumStar.DataAccess
 			// 对外键不进行级联删除
 			modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
 
-			modelBuilder.Entity<ArticleContent>()
-				.Map(m =>
-				{
-					m.MapInheritedProperties();
-					m.ToTable("T_ArticleContent");
-				});
-			modelBuilder.Entity<ImageContent>()
-				.Map(m =>
-				{
-					m.MapInheritedProperties();
-					m.ToTable("T_ImageContent");
-				});
+			modelBuilder.Entity<Content>()
+					.Property(e => e.Id)
+					.HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
 			base.OnModelCreating(modelBuilder);
 		}

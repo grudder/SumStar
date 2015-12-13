@@ -58,7 +58,7 @@ namespace SumStar.Controllers
 		public ActionResult GetByCategory(int? categoryId)
 		{
 			Expression<Func<Content, bool>> predicate;
-			if (categoryId == null)
+			if (categoryId == null || categoryId == 0)
 			{
 				predicate = i => true;
 			}

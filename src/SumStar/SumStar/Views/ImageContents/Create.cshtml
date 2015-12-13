@@ -1,13 +1,13 @@
-﻿@model SumStar.Models.ArticleContent
+﻿@model SumStar.Models.ImageContent
 
 @{
-    ViewBag.Title = "新增文章内容";
+    ViewBag.Title = "新增图片内容";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>@ViewBag.Title</h2>
 
-@using (Html.BeginForm("Create", "ArticleContents", FormMethod.Post, new { enctype = "multipart/form-data" })) 
+@using (Html.BeginForm("Create", "ImageContents", FormMethod.Post, new { enctype = "multipart/form-data" })) 
 {
     @Html.AntiForgeryToken()
     
@@ -40,30 +40,20 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.TopicImage, new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.LinkUrl, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-				@Html.HiddenFor(model => model.TopicImage)
-				<input type="file" id="topicImageFile" name="topicImageFile" accept="image/gif, image/jpeg, image/png" />
-                @Html.ValidationMessageFor(model => model.TopicImage, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.LinkUrl, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.LinkUrl, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Author, new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.ImageUrl, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Author, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Author, "", new { @class = "text-danger" })
+				@Html.HiddenFor(model => model.ImageUrl)
+				<input type="file" id="imageFile" name="imageFile" accept="image/gif, image/jpeg, image/png" />
+                @Html.ValidationMessageFor(model => model.ImageUrl, "", new { @class = "text-danger" })
             </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Content, new { @class = "control-label col-md-2" })
-	        <div class="col-md-10">
-		        <!-- 加载编辑器的容器 -->
-		        <script id="Content" name="Content" type="text/plain">
-				</script>
-		        @Html.ValidationMessageFor(model => model.Content, "", new {@class = "text-danger"})
-	        </div>
         </div>
 
         <div class="form-group">
@@ -77,15 +67,12 @@
 
 @section Scripts {
 	@Scripts.Render("~/bundles/jqueryval")
-	@Scripts.Render("~/bundles/UEditor")
 	<script type="text/javascript">
-		$(function () {
-			$("#topicImageFile").change(function () {
+		$(function() {
+			$("#imageFile").change(function() {
 				var fileUrl = this.value;
-				$("#TopicImage").val(fileUrl);
+				$("#ImageUrl").val(fileUrl);
 			});
-
-			var editor = UE.getEditor("Content", { initialFrameHeight : 400 });
 		});
 	</script>
 }

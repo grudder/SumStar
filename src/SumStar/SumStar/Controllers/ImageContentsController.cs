@@ -15,18 +15,18 @@ using SumStar.Services;
 
 namespace SumStar.Controllers
 {
-	public class ArticleContentsController : Controller
+	public class ImageContentsController : Controller
 	{
 		private readonly CategoryService _categoryService;
 		private ApplicationDbContext _dbContext;
 
 		private readonly string _uploadPath = ConfigurationManager.AppSettings["UploadPath"];
 
-		public ArticleContentsController()
+		public ImageContentsController()
 		{
 		}
 
-		public ArticleContentsController(ApplicationDbContext dbContext)
+		public ImageContentsController(ApplicationDbContext dbContext)
 		{
 			DbContext = dbContext;
 			_categoryService = new CategoryService(DbContext);
@@ -46,89 +46,89 @@ namespace SumStar.Controllers
 
 		public CategoryService CategoryService => _categoryService ?? new CategoryService(DbContext);
 
-		// GET: ArticleContents/Create?categoryId=5
+		// GET: ImageContents/Create?categoryId=5
 		public ActionResult Create(int categoryId)
 		{
-			var articleContent = new ArticleContent
+			var imageContent = new ImageContent
 			{
 				CategoryId = categoryId,
 				Category = DbContext.Categories.Find(categoryId)
 			};
 
-			return View(articleContent);
+			return View(imageContent);
 		}
 
-		// POST: ArticleContents/Create?categoryId=5
+		// POST: ImageContents/Create?categoryId=5
 		// 为了防止“过多发布”攻击，请启用要绑定到的特定属性，有关 
 		// 详细信息，请参阅 http://go.microsoft.com/fwlink/?LinkId=317598。
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		[ValidateInput(false)]
-		public ActionResult Create([Bind(Include = "Id,CategoryId,Title,DisplayOrder,TopicImage,Author,Content")] ArticleContent articleContent,
-			HttpPostedFileBase topicImageFile)
+		public ActionResult Create([Bind(Include = "Id,CategoryId,Title,DisplayOrder,LinkUrl,ImageUrl")] ImageContent imageContent,
+			HttpPostedFileBase imageFile)
 		{
-			if (topicImageFile != null && topicImageFile.ContentLength > 0)
-			{
-				string userName = HttpContext.User.Identity.Name;
-				string folderUrl = Path.Combine(_uploadPath, userName);
-				string folderPath = Server.MapPath(folderUrl);
-				if (!Directory.Exists(folderPath))
-				{
-					Directory.CreateDirectory(folderPath);
-				}
-				string fileExtension = topicImageFile.FileName.Substring(topicImageFile.FileName.LastIndexOf('.'));
-				string fileName = DateTime.Now.ToString("yyyyMMddHHmmssffff") + fileExtension;
-				string filePath = Path.Combine(folderPath, fileName);
-				topicImageFile.SaveAs(filePath);
-
-				string fileUrl = folderUrl + "/" + fileName;
-				articleContent.TopicImage = fileUrl;
-			}
-
-			articleContent.CreateBy = HttpContext.User.Identity.GetUserId();
-			articleContent.CreateTime = DateTime.Now;
+			imageContent.CreateBy = HttpContext.User.Identity.GetUserId();
+			imageContent.CreateTime = DateTime.Now;
 
 			if (ModelState.IsValid)
 			{
-				DbContext.Contents.Add(articleContent);
+				if (imageFile != null && imageFile.ContentLength > 0)
+				{
+					string userName = HttpContext.User.Identity.Name;
+					string folderUrl = Path.Combine(_uploadPath, userName);
+					string folderPath = Server.MapPath(folderUrl);
+					if (!Directory.Exists(folderPath))
+					{
+						Directory.CreateDirectory(folderPath);
+					}
+					string fileExtension = imageFile.FileName.Substring(imageFile.FileName.LastIndexOf('.'));
+					string fileName = DateTime.Now.ToString("yyyyMMddHHmmssffff") + fileExtension;
+					string filePath = Path.Combine(folderPath, fileName);
+					imageFile.SaveAs(filePath);
+
+					string fileUrl = folderUrl + "/" + fileName;
+					imageContent.ImageUrl = fileUrl;
+				}
+
+				DbContext.Contents.Add(imageContent);
 				DbContext.SaveChanges();
-				return RedirectToAction("Index", "Contents", new {categoryId = articleContent.CategoryId});
+				return RedirectToAction("Index", "Contents", new {categoryId = imageContent.CategoryId});
 			}
 
-			articleContent.Category = DbContext.Categories.Find(articleContent.CategoryId);
-			return View(articleContent);
+			imageContent.Category = DbContext.Categories.Find(imageContent.CategoryId);
+			return View(imageContent);
 		}
 
-		// GET: ArticleContents/Edit/5
+		// GET: ImageContents/Edit/5
 		public ActionResult Edit(int? id)
 		{
 			if (id == null)
 			{
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 			}
-			var articleContent = DbContext.ArticleContents.Find(id);
-			if (articleContent == null)
+			var imageContent = DbContext.ImageContents.Find(id);
+			if (imageContent == null)
 			{
 				return HttpNotFound();
 			}
-			return View(articleContent);
+			return View(imageContent);
 		}
 
-		// POST: ArticleContents/Edit/5
+		// POST: ImageContents/Edit/5
 		// 为了防止“过多发布”攻击，请启用要绑定到的特定属性，有关 
 		// 详细信息，请参阅 http://go.microsoft.com/fwlink/?LinkId=317598。
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		[ValidateInput(false)]
-		public ActionResult Edit([Bind(Include = "Id,CategoryId,Title,DisplayOrder,TopicImage,Author,Content,CreateBy,CreateTime")] ArticleContent
-				articleContent, HttpPostedFileBase topicImageFile)
+		public ActionResult Edit([Bind(Include = "Id,CategoryId,Title,DisplayOrder,LinkUrl,ImageUrl,CreateBy,CreateTime")] ImageContent
+				imageContent, HttpPostedFileBase imageFile)
 		{
 			if (ModelState.IsValid)
 			{
-				if (topicImageFile != null && topicImageFile.ContentLength > 0)
+				if (imageFile != null && imageFile.ContentLength > 0)
 				{
 					// 删除原有文件
-					string oldFilePath = Server.MapPath(articleContent.TopicImage);
+					string oldFilePath = Server.MapPath(imageContent.ImageUrl);
 					if (System.IO.File.Exists(oldFilePath))
 					{
 						System.IO.File.Delete(oldFilePath);
@@ -142,57 +142,57 @@ namespace SumStar.Controllers
 					{
 						Directory.CreateDirectory(folderPath);
 					}
-					string fileExtension = topicImageFile.FileName.Substring(topicImageFile.FileName.LastIndexOf('.'));
+					string fileExtension = imageFile.FileName.Substring(imageFile.FileName.LastIndexOf('.'));
 					string fileName = DateTime.Now.ToString("yyyyMMddHHmmssffff") + fileExtension;
 					string filePath = Path.Combine(folderPath, fileName);
-					topicImageFile.SaveAs(filePath);
+					imageFile.SaveAs(filePath);
 
 					string fileUrl = folderUrl + "/" + fileName;
-					articleContent.TopicImage = fileUrl;
+					imageContent.ImageUrl = fileUrl;
 				}
 
-				DbContext.Entry(articleContent).State = EntityState.Modified;
+				DbContext.Entry(imageContent).State = EntityState.Modified;
 				DbContext.SaveChanges();
-				return RedirectToAction("Index", "Contents", new {categoryId = articleContent.CategoryId});
+				return RedirectToAction("Index", "Contents", new {categoryId = imageContent.CategoryId});
 			}
-			return View(articleContent);
+			return View(imageContent);
 		}
 
-		// GET: ArticleContents/Delete/5
+		// GET: ImageContents/Delete/5
 		public ActionResult Delete(int? id)
 		{
 			if (id == null)
 			{
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 			}
-			var articleContent = DbContext.ArticleContents.Find(id);
-			if (articleContent == null)
+			var imageContent = DbContext.ImageContents.Find(id);
+			if (imageContent == null)
 			{
 				return HttpNotFound();
 			}
-			return View(articleContent);
+			return View(imageContent);
 		}
 
-		// POST: ArticleContents/Delete/5
+		// POST: ImageContents/Delete/5
 		[HttpPost, ActionName("Delete")]
 		[ValidateAntiForgeryToken]
 		public ActionResult DeleteConfirmed(int id)
 		{
-			var articleContent = DbContext.ArticleContents.Find(id);
+			var imageContent = DbContext.ImageContents.Find(id);
 
 			// 删除附件文件
-			if (!String.IsNullOrEmpty(articleContent.TopicImage))
+			if (!String.IsNullOrEmpty(imageContent.ImageUrl))
 			{
-				string oldFilePath = Server.MapPath(articleContent.TopicImage);
+				string oldFilePath = Server.MapPath(imageContent.ImageUrl);
 				if (System.IO.File.Exists(oldFilePath))
 				{
 					System.IO.File.Delete(oldFilePath);
 				}
 			}
 
-			DbContext.Contents.Remove(articleContent);
+			DbContext.Contents.Remove(imageContent);
 			DbContext.SaveChanges();
-			return RedirectToAction("Index", "Contents", new {categoryId = articleContent.CategoryId});
+			return RedirectToAction("Index", "Contents", new {categoryId = imageContent.CategoryId});
 		}
 
 		protected override void Dispose(bool disposing)
