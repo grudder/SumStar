@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Configuration;
 using System.Data.Entity;
+using System.IO;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
@@ -17,6 +19,8 @@ namespace SumStar.Controllers
 	{
 		private readonly CategoryService _categoryService;
 		private ApplicationDbContext _dbContext;
+
+		private readonly string _uploadPath = ConfigurationManager.AppSettings["UploadPath"];
 
 		public ArticleContentsController()
 		{
@@ -56,8 +60,27 @@ namespace SumStar.Controllers
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		[ValidateInput(false)]
-		public ActionResult Create([Bind(Include = "Id,CategoryId,Title,DisplayOrder,TopicImage,Author,Content")] ArticleContent articleContent)
+		public ActionResult Create([Bind(Include = "Id,CategoryId,Title,DisplayOrder,Author,Content")] ArticleContent articleContent,
+			HttpPostedFileBase topicImageFile)
 		{
+			if (topicImageFile != null && topicImageFile.ContentLength > 0)
+			{
+				string userName = HttpContext.User.Identity.Name;
+				string folderUrl = Path.Combine(_uploadPath, userName);
+				string folderPath = Server.MapPath(folderUrl);
+				if (!Directory.Exists(folderPath))
+				{
+					Directory.CreateDirectory(folderPath);
+				}
+				string fileExtension = topicImageFile.FileName.Substring(topicImageFile.FileName.LastIndexOf('.'));
+				string fileName = DateTime.Now.ToString("yyyyMMddHHmmssffff") + fileExtension;
+				string filePath = Path.Combine(folderPath, fileName);
+				topicImageFile.SaveAs(filePath);
+
+				string fileUrl = folderUrl + "/" + fileName;
+				articleContent.TopicImage = fileUrl;
+			}
+
 			articleContent.CreateBy = HttpContext.User.Identity.GetUserId();
 			articleContent.CreateTime = DateTime.Now;
 
@@ -94,10 +117,36 @@ namespace SumStar.Controllers
 		[ValidateAntiForgeryToken]
 		[ValidateInput(false)]
 		public ActionResult Edit([Bind(Include = "Id,CategoryId,Title,DisplayOrder,CreateBy,CreateTime,TopicImage,Author,Content")] ArticleContent
-				articleContent)
+				articleContent, HttpPostedFileBase topicImageFile)
 		{
 			if (ModelState.IsValid)
 			{
+				if (topicImageFile != null && topicImageFile.ContentLength > 0)
+				{
+					// 删除原有文件
+					string oldFilePath = Server.MapPath(articleContent.TopicImage);
+					if (System.IO.File.Exists(oldFilePath))
+					{
+						System.IO.File.Delete(oldFilePath);
+					}
+
+					// 保存新上传的文件
+					string userName = HttpContext.User.Identity.Name;
+					string folderUrl = Path.Combine(_uploadPath, userName);
+					string folderPath = Server.MapPath(folderUrl);
+					if (!Directory.Exists(folderPath))
+					{
+						Directory.CreateDirectory(folderPath);
+					}
+					string fileExtension = topicImageFile.FileName.Substring(topicImageFile.FileName.LastIndexOf('.'));
+					string fileName = DateTime.Now.ToString("yyyyMMddHHmmssffff") + fileExtension;
+					string filePath = Path.Combine(folderPath, fileName);
+					topicImageFile.SaveAs(filePath);
+
+					string fileUrl = folderUrl + "/" + fileName;
+					articleContent.TopicImage = fileUrl;
+				}
+
 				DbContext.Entry(articleContent).State = EntityState.Modified;
 				DbContext.SaveChanges();
 				return RedirectToAction("Index", "Contents", new {categoryId = articleContent.CategoryId});
