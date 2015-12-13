@@ -94,7 +94,8 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-	@Scripts.Render("~/bundles/UEditor")
+	<script type="text/javascript" src="@Url.Content("~/Content/UEditor/ueditor.config.js")"></script>
+	<script type="text/javascript" src="@Url.Content("~/Content/UEditor/ueditor.all.min.js")"></script>
 	<script type="text/javascript">
 		$(function () {
 			var editor = UE.getEditor("Content", { initialFrameHeight: 400 });

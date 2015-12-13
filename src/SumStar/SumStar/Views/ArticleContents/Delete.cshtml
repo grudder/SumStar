@@ -87,7 +87,7 @@
 </div>
 
 @section Scripts {
-	@Scripts.Render("~/bundles/UEditor")
+	<script type="text/javascript" src="@Url.Content("~/Content/UEditor/ueditor.parse.min.js")"></script>
 	<script type="text/javascript">
 		$(function () {
 			uParse("#Content");

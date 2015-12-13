@@ -13,7 +13,7 @@ using SumStar.Models.ViewModels;
 
 namespace SumStar.Controllers
 {
-	//[Authorize(Roles = "SysAdmin")]
+	[Authorize(Roles = "SysAdmin")]
 	public class UsersController : Controller
 	{
 		private ApplicationUserManager _userManager;

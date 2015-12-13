@@ -26,11 +26,6 @@ namespace SumStar
 				"~/Scripts/jquery.dataTables.js",
 				"~/Scripts/dataTables.bootstrap.js"));
 
-			bundles.Add(new ScriptBundle("~/bundles/UEditor").Include(
-				"~/Content/UEditor/ueditor.config.js",
-				"~/Content/UEditor/ueditor.all.js",
-				"~/Content/UEditor/ueditor.parse.js"));
-
 			bundles.Add(new StyleBundle("~/Content/css").Include(
 				"~/Content/bootstrap.css",
 				"~/Content/site.css"));
