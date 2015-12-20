@@ -55,9 +55,7 @@
 			// 显示栏目表格
 			var showCategoryTable = function(categoryId) {
 				var url = '@Url.Action("GetChildCategories", "Categories")';
-				if (categoryId != null) {
-					url += "/" + categoryId;
-				}
+				url += "/" + categoryId;
 				$("#table-category").DataTable({
 					language: {
 						url: '@Url.Content("~/Scripts/jquery.dataTables.zhCn.json")'
@@ -119,7 +117,7 @@
 
 			$.fn.zTree.init($("#treeCategory"), setting);
 
-			showCategoryTable(null);
+			showCategoryTable(1);
 		});
 	</script>
 }

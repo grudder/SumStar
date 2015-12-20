@@ -2,6 +2,7 @@
 using System.Linq;
 
 using SumStar.DataAccess;
+using SumStar.Models;
 using SumStar.Models.ViewModels;
 
 namespace SumStar.Services
@@ -15,25 +16,13 @@ namespace SumStar.Services
 			_dbContext = dbContext;
 		}
 
+		/// <summary>
+		/// 获取下级子栏目的树节点。
+		/// </summary>
+		/// <param name="categoryId">栏目标识。</param>
+		/// <returns>下级子栏目的树节点。</returns>
 		public List<ZTreeNode> GetChildTreeNodes(int? categoryId)
 		{
-			if (categoryId == null)
-			{
-				var rootNode = new ZTreeNode
-				{
-					Id = 0,
-					Name = "【所有栏目】",
-					IsParent = true,
-					Open = true
-				};
-
-				return new List<ZTreeNode> { rootNode };
-			}
-
-			if (categoryId == 0)
-			{
-				categoryId = null;
-			}
 			var query = from category in _dbContext.Categories
 						where category.ParentId == categoryId
 						orderby category.DisplayOrder
@@ -45,6 +34,21 @@ namespace SumStar.Services
 							ContentType = category.ContentType.ToString()
 						};
 			return query.ToList();
+		}
+
+		/// <summary>
+		/// 获取所有递归子栏目。
+		/// </summary>
+		/// <param name="categoryId">栏目标识。</param>
+		/// <returns>所有递归子栏目。</returns>
+		public IEnumerable<Category> GetRecursiveChilds(int categoryId)
+		{
+			var query = from category in _dbContext.Categories
+						where category.ParentId == categoryId
+						orderby category.DisplayOrder
+						select category;
+			IList<Category> categories = query.ToList();
+			return categories.Concat(categories.SelectMany(category => GetRecursiveChilds(category.Id)));
 		}
 	}
 }

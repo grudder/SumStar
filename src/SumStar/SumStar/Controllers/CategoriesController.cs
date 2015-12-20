@@ -72,12 +72,8 @@ namespace SumStar.Controllers
 		}
 
 		// GET: Categories/GetChildCategories/5
-		public ActionResult GetChildCategories(int? id)
+		public ActionResult GetChildCategories(int id)
 		{
-			if (id == 0)
-			{
-				id = null;
-			}
 			Expression<Func<Category, bool>> predicate = i => i.ParentId == id;
 			var data = TableDataSource<Category>.FromRequest(HttpContext.Request, DbContext.Categories, predicate);
 			string json = JsonConvert.SerializeObject(

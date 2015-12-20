@@ -53,7 +53,7 @@
 		$(function() {
 			// 显示内容表格
 			var showContentTable = function(categoryId) {
-				if (categoryId === null || categoryId === 0) {
+				if (categoryId === 1) {
 					$("#link-create").hide();
 				} else {
 					$("#link-create").show();
@@ -131,7 +131,7 @@
 
 			$.fn.zTree.init($("#treeCategory"), setting);
 
-			showContentTable(null);
+			showContentTable(1);
 		});
 	</script>
 }

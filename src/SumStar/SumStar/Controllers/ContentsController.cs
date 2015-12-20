@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
 using System.Web;
@@ -55,17 +58,12 @@ namespace SumStar.Controllers
 		}
 
 		// GET: Contents/GetByCategory?categoryId=5
-		public ActionResult GetByCategory(int? categoryId)
+		public ActionResult GetByCategory(int categoryId)
 		{
-			Expression<Func<Content, bool>> predicate;
-			if (categoryId == null || categoryId == 0)
-			{
-				predicate = i => true;
-			}
-			else
-			{
-				predicate = i => i.CategoryId == categoryId;
-			}
+			Expression<Func<Content, bool>> predicate = i => i.CategoryId == categoryId;
+			IEnumerable<Category> categories = CategoryService.GetRecursiveChilds(categoryId);
+			predicate = categories.Aggregate(predicate, (current, category) => current.Or(i => i.CategoryId == category.Id));
+
 			var data = TableDataSource<Content>.FromRequest(HttpContext.Request, DbContext.Contents, predicate);
 			var json = JsonConvert.SerializeObject(
 				data,

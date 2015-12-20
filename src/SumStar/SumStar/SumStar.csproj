@@ -172,6 +172,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\ImageContentsController.cs" />
+    <Compile Include="Helper\ExpressionExtension.cs" />
+    <Compile Include="Helper\ParameterRebinder.cs" />
     <Compile Include="UEditor\Config.cs" />
     <Compile Include="UEditor\ConfigHandler.cs" />
     <Compile Include="UEditor\CrawlerHandler.cs" />
