@@ -1,0 +1,13 @@
+﻿.body-index {
+	background: url("images/bg-index.jpg") no-repeat 0 0;
+	height: 1002px;
+	padding-top: 565px;
+}
+
+.simply-scroll, .simply-scroll .simply-scroll-clip {
+	width: 100%;
+}
+
+.simply-scroll-clip li {
+	margin: 0 20px;
+}

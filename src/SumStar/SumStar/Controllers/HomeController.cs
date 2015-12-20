@@ -1,23 +1,49 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Web;
 using System.Web.Mvc;
+
+using Microsoft.AspNet.Identity.Owin;
+
+using SumStar.DataAccess;
+using SumStar.Models;
+using SumStar.Services;
 
 namespace SumStar.Controllers
 {
 	public class HomeController : Controller
 	{
-		public ActionResult Index()
+		private ApplicationDbContext _dbContext;
+		private readonly ContentService _contentService;
+
+		public ApplicationDbContext DbContext
 		{
-			return View();
+			get
+			{
+				return _dbContext ?? HttpContext.GetOwinContext().Get<ApplicationDbContext>();
+			}
+			private set
+			{
+				_dbContext = value;
+			}
 		}
 
-		public ActionResult Contact()
-		{
-			ViewBag.Message = "Your contact page.";
+		public ContentService ContentService => _contentService ?? new ContentService(DbContext);
 
-			return View();
+		public HomeController()
+		{
+		}
+
+		public HomeController(ApplicationDbContext dbContext)
+		{
+			DbContext = dbContext;
+			_contentService = new ContentService(DbContext);
+		}
+
+		// GET: /Home
+		public ActionResult Index()
+		{
+			IList<Content> contents = ContentService.GetByCategory("首页滚动图");
+			return View(contents);
 		}
 	}
 }

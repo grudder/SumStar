@@ -1,24 +1,82 @@
-﻿body {
-    padding-top: 50px;
-    padding-bottom: 20px;
-}
+﻿/*body {
+	padding-top: 50px;
+	padding-bottom: 20px;
+}*/
 
 /* Set padding to keep content from hitting the edges */
 .body-content {
-    padding-left: 15px;
-    padding-right: 15px;
+	padding-left: 15px;
+	padding-right: 15px;
 }
 
 /* Override the default bootstrap behavior where horizontal description lists 
    will truncate terms that are too long to fit in the left column 
 */
 .dl-horizontal dt {
-    white-space: normal;
+	white-space: normal;
 }
 
 /* Set width on the form input elements since they're 100% wide by default */
 input,
 select,
 textarea {
-    max-width: 280px;
+	max-width: 280px;
 }
+
+
+.navbar-logo {
+	min-height: 95px;
+}
+
+.logo {
+	width: 161px;
+	height: 95px;
+	background: url("images/logo.jpg") no-repeat 0 0;
+}
+
+.nav > li.logo-right {
+	padding-top: 25px;
+}
+
+	.nav > li.logo-right > a {
+		display: inline;
+	}
+
+		.nav > li.logo-right > a:hover,
+		.nav > li.logo-right > a:focus {
+			background: none;
+		}
+
+.navbar-site {
+	background-color: #003f92;
+	border-color: #003f92;
+	margin-bottom: 0;
+	border-radius: 0;
+}
+
+	.navbar-site .navbar-nav > li > a {
+		font-weight: bold;
+		color: #fff;
+		padding: 15px 40px;
+	}
+
+	.navbar-site .nav > li > a:hover,
+	.navbar-site .nav > li > a:focus {
+		background: none;
+		background-color: #be214c;
+	}
+
+.footer-site {
+	height: 147px;
+	background: url("images/bg-footer.jpg") no-repeat 0 0;
+}
+
+	.footer-site p {
+		margin-top: 50px;
+		color: #fff;
+		line-height: 200%;
+	}
+
+	.footer-site a {
+		color: #fff;
+	}

@@ -10,34 +10,14 @@
 	@RenderSection("header", false)
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("群星集团", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("主页", "Index", "Home")</li>
-					<li>@Html.ActionLink("用户管理", "Index", "Users")</li>
-					<li>@Html.ActionLink("操作日志", "Index", "OperationLogs")</li>
-					<li>@Html.ActionLink("栏目管理", "Index", "Categories")</li>
-					<li>@Html.ActionLink("内容管理", "Index", "Contents")</li>
-                </ul>
-                @Html.Partial("_LoginPartial")
-            </div>
-        </div>
-    </div>
-    <div class="container body-content">
-        @RenderBody()
-    </div>
+	@Html.Partial("_NavBarPartial")
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", false)
+	@RenderBody()
+
+	@Html.Partial("_FooterPartial")
+
+	@Scripts.Render("~/bundles/jquery")
+	@Scripts.Render("~/bundles/bootstrap")
+	@RenderSection("scripts", false)
 </body>
 </html>
