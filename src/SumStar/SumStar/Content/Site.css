@@ -31,7 +31,7 @@ textarea {
 .logo {
 	width: 161px;
 	height: 95px;
-	background: url("images/logo.jpg") no-repeat 0 0;
+	background: url("images/logo.jpg") no-repeat center center;
 }
 
 .nav > li.logo-right {
@@ -68,7 +68,7 @@ textarea {
 
 .footer-site {
 	height: 147px;
-	background: url("images/bg-footer.jpg") no-repeat 0 0;
+	background: url("images/bg-footer.jpg") no-repeat center center;
 }
 
 	.footer-site p {
