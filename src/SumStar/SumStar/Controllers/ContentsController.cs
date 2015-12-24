@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -11,6 +10,8 @@ using Microsoft.AspNet.Identity.Owin;
 
 using Newtonsoft.Json;
 
+using PagedList;
+
 using SumStar.DataAccess;
 using SumStar.Helper;
 using SumStar.Models;
@@ -18,7 +19,6 @@ using SumStar.Services;
 
 namespace SumStar.Controllers
 {
-	[Authorize(Roles = "ContentAdmin")]
 	public class ContentsController : Controller
 	{
 		private ApplicationDbContext _dbContext;
@@ -48,6 +48,7 @@ namespace SumStar.Controllers
 			_categoryService = new CategoryService(DbContext);
 		}
 
+		[Authorize(Roles = "ContentAdmin")]
 		// GET: Contents?categoryId=5
 		public ActionResult Index(int? categoryId)
 		{
@@ -57,8 +58,8 @@ namespace SumStar.Controllers
 			return View();
 		}
 
-		// GET: Contents/GetByCategory?categoryId=5
-		public ActionResult GetByCategory(int categoryId)
+		// GET: Contents/GetJsonByCategory?categoryId=5
+		public ActionResult GetJsonByCategory(int categoryId)
 		{
 			Expression<Func<Content, bool>> predicate = i => i.CategoryId == categoryId;
 			IEnumerable<Category> categories = CategoryService.GetRecursiveChilds(categoryId);
@@ -75,6 +76,66 @@ namespace SumStar.Controllers
 			return Content(json);
 		}
 
+		// GET: Contents/List?categoryId=5&categoryName=新闻动态&pageSize=10&page=1
+		public ActionResult List(int? categoryId, string categoryName, int? pageSize, int? page)
+		{
+			Category category;
+			if (categoryId == null)
+			{
+				category = DbContext.Categories.First(i => i.Name == categoryName);
+			}
+			else
+			{
+				category = DbContext.Categories.Find(categoryId);
+			}
+			if (category == null)
+			{
+				return HttpNotFound();
+			}
+			ViewBag.Category = category;
+
+			Expression<Func<Content, bool>> predicate = i => i.CategoryId == category.Id;
+			IEnumerable<Category> categories = CategoryService.GetRecursiveChilds(category.Id);
+			predicate = categories.Aggregate(predicate, (current, c) => current.Or(i => i.CategoryId == c.Id));
+
+			var query = from content in DbContext.Contents
+						orderby content.DisplayOrder descending
+						select content;
+			// 分页处理
+			pageSize = (pageSize ?? 10);
+			page = (page ?? 1);
+			IPagedList<Content> pagedList = query.Where(predicate).ToPagedList(page.Value, pageSize.Value);
+
+			return View(pagedList);
+		}
+
+		// GET: Contents/ListByName?categoryName=新闻动态&pageSize=10&page=1
+		public ActionResult ListByName(string categoryName, int? pageSize, int? page)
+		{
+			Category category = DbContext.Categories.Single(i => i.Name == categoryName);
+			if (category == null)
+			{
+				return HttpNotFound();
+			}
+			ViewBag.Category = category;
+
+			Expression<Func<Content, bool>> predicate = i => i.CategoryId == category.Id;
+			IEnumerable<Category> categories = CategoryService.GetRecursiveChilds(category.Id);
+			predicate = categories.Aggregate(predicate, (current, c) => current.Or(i => i.CategoryId == c.Id));
+
+			var query = from content in DbContext.Contents
+						orderby content.DisplayOrder descending
+						select content;
+
+			// 分页处理
+			pageSize = (pageSize ?? 10);
+			page = (page ?? 1);
+			IPagedList<Content> pagedList = query.Where(predicate).ToPagedList(page.Value, pageSize.Value);
+
+			return View(pagedList);
+		}
+
+		[Authorize(Roles = "ContentAdmin")]
 		// GET: Contents/Create?categoryId=5
 		public ActionResult Create(int categoryId)
 		{
@@ -84,10 +145,14 @@ namespace SumStar.Controllers
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 			}
 			string controllerName = category.ContentType + "Contents";
-			
-			return RedirectToAction("Create", controllerName, new {categoryId});
+
+			return RedirectToAction("Create", controllerName, new
+			{
+				categoryId
+			});
 		}
 
+		[Authorize(Roles = "ContentAdmin")]
 		// GET: Contents/Edit/5
 		public ActionResult Edit(int? id)
 		{
@@ -105,10 +170,14 @@ namespace SumStar.Controllers
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 			}
 			string controllerName = content.Category.ContentType + "Contents";
-			
-			return RedirectToAction("Edit", controllerName, new {id});
+
+			return RedirectToAction("Edit", controllerName, new
+			{
+				id
+			});
 		}
 
+		[Authorize(Roles = "ContentAdmin")]
 		// GET: Contents/Delete/5
 		public ActionResult Delete(int? id)
 		{
@@ -126,8 +195,11 @@ namespace SumStar.Controllers
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 			}
 			string controllerName = content.Category.ContentType + "Contents";
-			
-			return RedirectToAction("Delete", controllerName, new {id});
+
+			return RedirectToAction("Delete", controllerName, new
+			{
+				id
+			});
 		}
 
 		protected override void Dispose(bool disposing)

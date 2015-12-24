@@ -238,6 +238,8 @@
     <Content Include="Content\images\sort_desc.png" />
     <Content Include="Content\images\sort_desc_disabled.png" />
     <Content Include="Content\images\bg-footer.jpg" />
+    <Content Include="Content\images\bg-content-header.jpg" />
+    <Content Include="Content\images\bg-content-list-header.jpg" />
     <Content Include="Content\jquery.dataTables.css" />
     <Content Include="Content\jquery.dataTables.min.css" />
     <Content Include="Content\jquery.dataTables_themeroller.css" />
@@ -611,6 +613,8 @@
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\Shared\_NavBarPartial.cshtml" />
     <Content Include="Views\Shared\_FooterPartial.cshtml" />
+    <Content Include="Views\Contents\List.cshtml" />
+    <Content Include="Views\Categories\_NavigatorPartial.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

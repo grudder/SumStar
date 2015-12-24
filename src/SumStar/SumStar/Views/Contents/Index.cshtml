@@ -59,7 +59,7 @@
 					$("#link-create").show();
 				}
 
-				var url = '@Url.Action("GetByCategory", "Contents")';
+				var url = '@Url.Action("GetJsonByCategory", "Contents")';
 				if (categoryId != null) {
 					url += "?categoryId=" + categoryId;
 				}

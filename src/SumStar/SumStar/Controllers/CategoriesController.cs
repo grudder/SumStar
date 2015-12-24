@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -20,7 +21,6 @@ using SumStar.Services;
 
 namespace SumStar.Controllers
 {
-	[Authorize(Roles = "ContentAdmin")]
 	public class CategoriesController : Controller
 	{
 		private ApplicationDbContext _dbContext;
@@ -52,9 +52,17 @@ namespace SumStar.Controllers
 		public CategoryService CategoryService => _categoryService ?? new CategoryService(DbContext);
 
 		// GET: Categories
+		[Authorize(Roles = "ContentAdmin")]
 		public ActionResult Index()
 		{
 			return View();
+		}
+
+		// GET: Categories/Navigator/5
+		public PartialViewResult Navigator(int id)
+		{
+			IList<Category> categories = CategoryService.GetRecursiveParents(id, true);
+            return PartialView("_NavigatorPartial", categories);
 		}
 
 		// GET: Categories/GetChildTreeNodes/5
@@ -87,23 +95,19 @@ namespace SumStar.Controllers
 		}
 
 		// GET: Categories/Create/5
+		[Authorize(Roles = "ContentAdmin")]
 		public ActionResult Create(int? id)
 		{
-			var allCategories = DbContext.Categories.ToList();
-			var topCategory = new Category
-			{
-				Id = 0,
-				Name = "【网站栏目】"
-			};
-			allCategories.Insert(0, topCategory);
-			ViewBag.ParentId = new SelectList(allCategories, "Id", "Name", id);
+			var categories = DbContext.Categories.ToList();
+			ViewBag.ParentId = new SelectList(categories, "Id", "Name", id);
 			
 			return View();
 		}
-
+		
 		// POST: Categories/Create
 		// 为了防止“过多发布”攻击，请启用要绑定到的特定属性，有关 
 		// 详细信息，请参阅 http://go.microsoft.com/fwlink/?LinkId=317598。
+		[Authorize(Roles = "ContentAdmin")]
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		public ActionResult Create(
@@ -120,18 +124,13 @@ namespace SumStar.Controllers
 				return RedirectToAction("Index");
 			}
 
-			var allCategories = DbContext.Categories.ToList();
-			var topCategory = new Category
-			{
-				Id = 0,
-				Name = "【网站栏目】"
-			};
-			allCategories.Insert(0, topCategory);
-			ViewBag.ParentId = new SelectList(allCategories, "Id", "Name", category.ParentId);
+			var categories = DbContext.Categories.ToList();
+			ViewBag.ParentId = new SelectList(categories, "Id", "Name", category.ParentId);
 			return View(category);
 		}
 
 		// GET: Categories/Edit/5
+		[Authorize(Roles = "ContentAdmin")]
 		public ActionResult Edit(int? id)
 		{
 			if (id == null)
@@ -150,6 +149,7 @@ namespace SumStar.Controllers
 		// POST: Categories/Edit/5
 		// 为了防止“过多发布”攻击，请启用要绑定到的特定属性，有关 
 		// 详细信息，请参阅 http://go.microsoft.com/fwlink/?LinkId=317598。
+		[Authorize(Roles = "ContentAdmin")]
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		public ActionResult Edit(
@@ -170,6 +170,7 @@ namespace SumStar.Controllers
 		}
 
 		// GET: Categories/Delete/5
+		[Authorize(Roles = "ContentAdmin")]
 		public ActionResult Delete(int? id)
 		{
 			if (id == null)
@@ -185,6 +186,7 @@ namespace SumStar.Controllers
 		}
 
 		// POST: Categories/Delete/5
+		[Authorize(Roles = "ContentAdmin")]
 		[HttpPost, ActionName("Delete")]
 		[ValidateAntiForgeryToken]
 		public ActionResult DeleteConfirmed(int id)

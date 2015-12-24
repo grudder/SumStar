@@ -28,7 +28,7 @@
 		<div class="navbar-collapse collapse">
 			<ul class="nav navbar-nav">
 				<li>@Html.ActionLink("首页", "Index", "Home")</li>
-				<li>@Html.ActionLink("新闻动态", "Index", "Users")</li>
+				<li>@Html.ActionLink("新闻动态", "List", "Contents", new {categoryName = "新闻动态"}, null)</li>
 				<li>@Html.ActionLink("化工原料", "Index", "OperationLogs")</li>
 				<li>@Html.ActionLink("实业投资", "Index", "Categories")</li>
 				<li>@Html.ActionLink("核仪器设备", "Index", "Contents")</li>

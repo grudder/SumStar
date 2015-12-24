@@ -1,12 +1,11 @@
-﻿/*body {
-	padding-top: 50px;
+﻿body.admin {
+	padding-top: 40px;
 	padding-bottom: 20px;
-}*/
+}
 
 /* Set padding to keep content from hitting the edges */
 .body-content {
-	padding-left: 15px;
-	padding-right: 15px;
+	padding: 15px;
 }
 
 /* Override the default bootstrap behavior where horizontal description lists 
@@ -23,6 +22,10 @@ textarea {
 	max-width: 280px;
 }
 
+
+td.right-align {
+	text-align: right;
+}
 
 .navbar-logo {
 	min-height: 95px;
@@ -66,13 +69,45 @@ textarea {
 		background-color: #be214c;
 	}
 
+#content-header {
+	height: 461px;
+	background: url("images/bg-content-header.jpg") no-repeat center center;
+}
+
+	#content-header h1 {
+		color: #e3e8ee;
+		font-size: 48px;
+		font-weight: bolder;
+		text-align: center;
+		line-height: 461px;
+		margin-top: 0;
+	}
+
+.content-list-header {
+	height: 35px;
+	background: url("images/bg-content-list-header.jpg") no-repeat left bottom;
+}
+
+	.content-list-header .pull-left {
+		font-size: 14px;
+		font-weight: bold;
+		color: #003f92;
+		padding-bottom: 10px;
+		margin-top: 10px;
+	}
+
+	.content-list-header .pull-right {
+		padding-bottom: 10px;
+		margin-top: 10px;
+	}
+
 .footer-site {
-	height: 147px;
+	height: 129px;
 	background: url("images/bg-footer.jpg") no-repeat center center;
 }
 
 	.footer-site p {
-		margin-top: 50px;
+		margin-top: 40px;
 		color: #fff;
 		line-height: 200%;
 	}

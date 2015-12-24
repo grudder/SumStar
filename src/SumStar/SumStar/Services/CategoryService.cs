@@ -50,5 +50,33 @@ namespace SumStar.Services
 			IList<Category> categories = query.ToList();
 			return categories.Concat(categories.SelectMany(category => GetRecursiveChilds(category.Id)));
 		}
+
+		/// <summary>
+		/// 获取所有递归父栏目。
+		/// </summary>
+		/// <param name="categoryId">栏目标识。</param>
+		/// <param name="includeSelf">是否包含当前栏目。</param>
+		/// <returns>所有递归父栏目。</returns>
+		public IList<Category> GetRecursiveParents(int categoryId, bool includeSelf)
+		{
+			IList<Category> categories = new List<Category>();
+			Category category = _dbContext.Categories.Find(categoryId);
+			if (category != null)
+			{
+				Category parentCategory = category.Parent;
+				while (parentCategory != null)
+				{
+					categories.Insert(0, parentCategory);
+					parentCategory = parentCategory.Parent;
+				}
+
+				if (includeSelf)
+				{
+					categories.Add(category);
+				}
+			}
+
+			return categories;
+		}
 	}
 }
