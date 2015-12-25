@@ -59,6 +59,7 @@ namespace SumStar.Controllers
 				return HttpNotFound();
 			}
 			ViewBag.Category = articleContent.Category;
+			ViewBag.Level1Category = CategoryService.GetLevel1Category(articleContent.Category);
 			return View(articleContent);
 		}
 

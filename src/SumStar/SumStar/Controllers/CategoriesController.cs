@@ -58,11 +58,20 @@ namespace SumStar.Controllers
 			return View();
 		}
 
-		// GET: Categories/Navigator/5
-		public PartialViewResult Navigator(int id)
+		// GET: Categories/NavigatorPartial/5
+		public PartialViewResult NavigatorPartial(int id)
 		{
 			IList<Category> categories = CategoryService.GetRecursiveParents(id, true);
             return PartialView("_NavigatorPartial", categories);
+		}
+
+		// GET: Categories/TreePanelPartial/5
+		public PartialViewResult TreePanelPartial(Category category)
+		{
+			Category level1Category = CategoryService.GetLevel1Category(category);
+			IList<Category> categories = CategoryService.GetChilds(level1Category.Id);
+			ViewBag.Level1Category = level1Category;
+            return PartialView("_TreePanelPartial", categories);
 		}
 
 		// GET: Categories/GetChildTreeNodes/5

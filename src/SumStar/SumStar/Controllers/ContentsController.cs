@@ -23,6 +23,7 @@ namespace SumStar.Controllers
 	{
 		private ApplicationDbContext _dbContext;
 		private readonly CategoryService _categoryService;
+		private readonly ContentService _contentService;
 
 		public ApplicationDbContext DbContext
 		{
@@ -38,6 +39,8 @@ namespace SumStar.Controllers
 
 		public CategoryService CategoryService => _categoryService ?? new CategoryService(DbContext);
 
+		public ContentService ContentService => _contentService ?? new ContentService(DbContext);
+
 		public ContentsController()
 		{
 		}
@@ -46,6 +49,7 @@ namespace SumStar.Controllers
 		{
 			DbContext = dbContext;
 			_categoryService = new CategoryService(DbContext);
+			_contentService = new ContentService(DbContext);
 		}
 
 		[Authorize(Roles = "ContentAdmin")]
@@ -62,7 +66,7 @@ namespace SumStar.Controllers
 		public ActionResult GetJsonByCategory(int categoryId)
 		{
 			Expression<Func<Content, bool>> predicate = i => i.CategoryId == categoryId;
-			IEnumerable<Category> categories = CategoryService.GetRecursiveChilds(categoryId);
+			IList<Category> categories = CategoryService.GetChilds(categoryId, true);
 			predicate = categories.Aggregate(predicate, (current, category) => current.Or(i => i.CategoryId == category.Id));
 
 			var data = TableDataSource<Content>.FromRequest(HttpContext.Request, DbContext.Contents, predicate);
@@ -93,20 +97,26 @@ namespace SumStar.Controllers
 				return HttpNotFound();
 			}
 			ViewBag.Category = category;
+			ViewBag.Level1Category = CategoryService.GetLevel1Category(category);
 
-			Expression<Func<Content, bool>> predicate = i => i.CategoryId == category.Id;
-			IEnumerable<Category> categories = CategoryService.GetRecursiveChilds(category.Id);
-			predicate = categories.Aggregate(predicate, (current, c) => current.Or(i => i.CategoryId == c.Id));
+			ActionResult actionResult = new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+			switch (category.DisplayMode)
+			{
+				case CategoryDisplayMode.TitleList:
+					IPagedList<Content> pagedList = ContentService.GetByCategory(category.Id, pageSize, page);
+                    actionResult = View(pagedList);
+					break;
 
-			var query = from content in DbContext.Contents
-						orderby content.DisplayOrder descending
-						select content;
-			// 分页处理
-			pageSize = (pageSize ?? 10);
-			page = (page ?? 1);
-			IPagedList<Content> pagedList = query.Where(predicate).ToPagedList(page.Value, pageSize.Value);
+				case CategoryDisplayMode.ImageList:
+					break;
 
-			return View(pagedList);
+				case CategoryDisplayMode.FirstContentDetail:
+					Content content = ContentService.GetFirstContentByCategory(category.Id);
+					actionResult = RedirectToAction("Detail", "Contents", new {content.Id});
+					break;
+			}
+
+			return actionResult;
 		}
 
 		// GET: Contents/Detail/5
@@ -127,10 +137,7 @@ namespace SumStar.Controllers
 			}
 
 			string controllerName = content.Category.ContentType + "Contents";
-			return RedirectToAction("Detail", controllerName, new
-			{
-				id
-			});
+			return RedirectToAction("Detail", controllerName, new {id});
 		}
 
 		[Authorize(Roles = "ContentAdmin")]

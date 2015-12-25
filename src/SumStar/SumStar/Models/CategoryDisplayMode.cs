@@ -1,14 +1,19 @@
 ﻿namespace SumStar.Models
 {
 	/// <summary>
-	/// 内容显示方式
+	/// 栏目的显示方式
 	/// </summary>
-	public enum ContentDisplayMode
+	public enum CategoryDisplayMode
 	{
 		/// <summary>
-		/// 列表
+		/// 标题列表
 		/// </summary>
-		List,
+		TitleList,
+
+		/// <summary>
+		/// 图片列表
+		/// </summary>
+		ImageList,
 
 		/// <summary>
 		/// 第一篇文章的详细内容

@@ -37,18 +37,40 @@ namespace SumStar.Services
 		}
 
 		/// <summary>
-		/// 获取所有递归子栏目。
+		/// 获取所有子栏目。
 		/// </summary>
 		/// <param name="categoryId">栏目标识。</param>
-		/// <returns>所有递归子栏目。</returns>
-		public IEnumerable<Category> GetRecursiveChilds(int categoryId)
+		/// <param name="recursive">是否递归获取。</param>
+		/// <returns>所有子栏目。</returns>
+		public IList<Category> GetChilds(int categoryId, bool recursive = false)
 		{
 			var query = from category in _dbContext.Categories
 						where category.ParentId == categoryId
 						orderby category.DisplayOrder
 						select category;
 			IList<Category> categories = query.ToList();
-			return categories.Concat(categories.SelectMany(category => GetRecursiveChilds(category.Id)));
+			if (!recursive)
+			{
+				return categories;
+			}
+			return categories.Concat(categories.SelectMany(category => GetChilds(category.Id))).ToList();
+		}
+
+		/// <summary>
+		/// 获取一级父栏目。
+		/// </summary>
+		/// <param name="category">当前栏目。</param>
+		/// <returns>一级父栏目，如果当前栏目为一级栏目，则直接返回。</returns>
+		public Category GetLevel1Category(Category category)
+		{
+			Category parent = category.Parent;
+
+			while (parent.ParentId != null)
+			{
+				category = parent;
+				parent = category.Parent;
+			}
+			return category;
 		}
 
 		/// <summary>

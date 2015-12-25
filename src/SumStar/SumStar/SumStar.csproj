@@ -175,7 +175,7 @@
     <Compile Include="Controllers\ImageContentsController.cs" />
     <Compile Include="Helper\ExpressionExtension.cs" />
     <Compile Include="Helper\ParameterRebinder.cs" />
-    <Compile Include="Models\ContentDisplayMode.cs" />
+    <Compile Include="Models\CategoryDisplayMode.cs" />
     <Compile Include="Services\ContentService.cs" />
     <Compile Include="UEditor\Config.cs" />
     <Compile Include="UEditor\ConfigHandler.cs" />
@@ -618,6 +618,7 @@
     <Content Include="Views\Categories\_NavigatorPartial.cshtml" />
     <Content Include="Views\ArticleContents\Detail.cshtml" />
     <Content Include="Views\Shared\_ContentLayout.cshtml" />
+    <Content Include="Views\Categories\_TreePanelPartial.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

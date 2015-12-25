@@ -1,0 +1,23 @@
+﻿@using SumStar.Models
+@model IList<Category>
+
+<div class="panel panel-primary">
+	<div class="panel-heading">
+		<div class="row">
+			<div class="col-md-12">
+				<h3 class="panel-title">
+					@ViewBag.Level1Category.Name
+				</h3>
+			</div>
+		</div>
+	</div>
+	<ul class="list-group">
+		@foreach (Category category in Model)
+		{
+			<li class="list-group-item">
+				<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+				@Html.ActionLink(category.Name, "List", "Contents", new {categoryId = category.Id}, null)
+			</li>
+		}
+	</ul>
+</div>

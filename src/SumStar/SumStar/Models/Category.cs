@@ -55,12 +55,12 @@ namespace SumStar.Models
 			set;
 		}
 
-		//[Display(Name = "内容显示方式")]
-		//public ContentDisplayMode ContentDisplayMode
-		//{
-		//	get;
-		//	set;
-		//}
+		[Display(Name = "显示方式")]
+		public CategoryDisplayMode? DisplayMode
+		{
+			get;
+			set;
+		}
 
 		[Display(Name = "备注")]
 		[StringLength(200)]
