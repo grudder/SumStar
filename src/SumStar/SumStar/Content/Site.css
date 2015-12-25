@@ -101,6 +101,10 @@ td.right-align {
 		margin-top: 10px;
 	}
 
+.content-detail h2 {
+	text-align: center;
+}
+
 .footer-site {
 	height: 129px;
 	background: url("images/bg-footer.jpg") no-repeat center center;

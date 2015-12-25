@@ -109,30 +109,28 @@ namespace SumStar.Controllers
 			return View(pagedList);
 		}
 
-		// GET: Contents/ListByName?categoryName=新闻动态&pageSize=10&page=1
-		public ActionResult ListByName(string categoryName, int? pageSize, int? page)
+		// GET: Contents/Detail/5
+		public ActionResult Detail(int? id)
 		{
-			Category category = DbContext.Categories.Single(i => i.Name == categoryName);
-			if (category == null)
+			if (id == null)
+			{
+				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+			}
+			Content content = DbContext.Contents.Find(id);
+			if (content == null)
 			{
 				return HttpNotFound();
 			}
-			ViewBag.Category = category;
+			if (content.Category == null)
+			{
+				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+			}
 
-			Expression<Func<Content, bool>> predicate = i => i.CategoryId == category.Id;
-			IEnumerable<Category> categories = CategoryService.GetRecursiveChilds(category.Id);
-			predicate = categories.Aggregate(predicate, (current, c) => current.Or(i => i.CategoryId == c.Id));
-
-			var query = from content in DbContext.Contents
-						orderby content.DisplayOrder descending
-						select content;
-
-			// 分页处理
-			pageSize = (pageSize ?? 10);
-			page = (page ?? 1);
-			IPagedList<Content> pagedList = query.Where(predicate).ToPagedList(page.Value, pageSize.Value);
-
-			return View(pagedList);
+			string controllerName = content.Category.ContentType + "Contents";
+			return RedirectToAction("Detail", controllerName, new
+			{
+				id
+			});
 		}
 
 		[Authorize(Roles = "ContentAdmin")]
@@ -144,8 +142,8 @@ namespace SumStar.Controllers
 			{
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 			}
-			string controllerName = category.ContentType + "Contents";
 
+			string controllerName = category.ContentType + "Contents";
 			return RedirectToAction("Create", controllerName, new
 			{
 				categoryId
@@ -169,8 +167,8 @@ namespace SumStar.Controllers
 			{
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 			}
-			string controllerName = content.Category.ContentType + "Contents";
 
+			string controllerName = content.Category.ContentType + "Contents";
 			return RedirectToAction("Edit", controllerName, new
 			{
 				id

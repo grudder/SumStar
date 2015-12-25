@@ -615,6 +615,7 @@
     <Content Include="Views\Shared\_FooterPartial.cshtml" />
     <Content Include="Views\Contents\List.cshtml" />
     <Content Include="Views\Categories\_NavigatorPartial.cshtml" />
+    <Content Include="Views\ArticleContents\Detail.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

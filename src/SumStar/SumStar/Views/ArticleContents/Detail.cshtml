@@ -1,0 +1,46 @@
+﻿@using SumStar.Models
+
+@model ArticleContent
+
+@{
+	ViewBag.Title = @ViewBag.Category.Name;
+}
+
+<div id="content-header">
+	<h1>@ViewBag.Category.Name</h1>
+</div>
+<div class="container body-content">
+	<div class="row">
+		<div class="col-md-3">
+			<div class="panel panel-primary">
+				<div class="panel-heading">
+					<div class="row">
+						<div class="col-md-12">
+							<h3 class="panel-title">
+								@ViewBag.Category.Name
+							</h3>
+						</div>
+					</div>
+				</div>
+				<div class="panel-body panel-body-tree">
+					<ul id="treeCategory" class="ztree"></ul>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-9">
+			<div class="content-list-header">
+				<h3 class="pull-left">@ViewBag.Title</h3>
+				<span class="pull-right">
+					@{Html.RenderAction("Navigator", "Categories", new {@ViewBag.Category.Id});}
+				</span>
+			</div>
+
+			<div class="content-detail">
+				<h2>@Model.Title</h2>
+				<p>
+					@Html.Raw(Model.Content)
+				</p>
+			</div>
+		</div>
+	</div>
+</div>

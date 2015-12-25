@@ -46,6 +46,22 @@ namespace SumStar.Controllers
 
 		public CategoryService CategoryService => _categoryService ?? new CategoryService(DbContext);
 
+		// GET: ArticleContents/Detail/5
+		public ActionResult Detail(int? id)
+		{
+			if (id == null)
+			{
+				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+			}
+			var articleContent = DbContext.ArticleContents.Find(id);
+			if (articleContent == null)
+			{
+				return HttpNotFound();
+			}
+			ViewBag.Category = articleContent.Category;
+			return View(articleContent);
+		}
+
 		// GET: ArticleContents/Create?categoryId=5
 		public ActionResult Create(int categoryId)
 		{
