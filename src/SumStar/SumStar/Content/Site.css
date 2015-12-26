@@ -69,6 +69,16 @@ td.right-align {
 		background-color: #be214c;
 	}
 
+.panel-category {
+	border-color: #002975;
+}
+
+	.panel-category > .panel-heading {
+		color: #fff;
+		background-color: #002975;
+		border-color: #002975;
+	}
+
 #content-header {
 	height: 461px;
 	background: url("images/bg-content-header.jpg") no-repeat center center;

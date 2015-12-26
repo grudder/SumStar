@@ -1,11 +1,10 @@
 ﻿@{
 	Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
 @section header{  
-	@RenderSection("header", false)  
-}  
-@section scripts {  
-	@RenderSection("scripts", false)  
+	@RenderSection("header", false)
+	<link href="~/Content/bootstrap-treeview.min.css" rel="stylesheet" type="text/css" />
 }
 
 <div id="content-header">
@@ -14,13 +13,13 @@
 <div class="container body-content">
 	<div class="row">
 		<div class="col-md-3">
-			@{Html.RenderAction("TreePanelPartial", "Categories", new {@ViewBag.Category});}
+			@{Html.RenderAction("TreePanelPartial", "Categories", new {ViewBag.Category, ViewBag.Level1Category});}
 		</div>
 		<div class="col-md-9">
 			<div class="content-list-header">
 				<h3 class="pull-left">@ViewBag.Category.Name</h3>
 				<span class="pull-right">
-					@{Html.RenderAction("NavigatorPartial", "Categories", new {@ViewBag.Category.Id});}
+					@{Html.RenderAction("NavigatorPartial", "Categories", new {ViewBag.Category.Id});}
 				</span>
 			</div>
 
@@ -30,3 +29,22 @@
 		</div>
 	</div>
 </div>
+
+@section scripts {
+	@RenderSection("scripts", false)
+	<script type="text/javascript" src='@Url.Content("~/Scripts/bootstrap-treeview.min.js")'></script>
+	<script type="text/javascript">
+		$(function () {
+			var url = "@Url.Action("GetBootstrapTree", "Categories", new {ViewBag.Level1Category.Id, archor = "treeCategory"})";
+			$.get(url, function (jsonTree) {
+				$('#treeCategory').treeview({
+					data: jsonTree,
+					highlightSelected: false,
+					enableLinks: true,
+					expandIcon: "glyphicon glyphicon-triangle-right",
+					collapseIcon: "glyphicon glyphicon-triangle-bottom"
+				});
+			});
+		});
+	</script>
+}

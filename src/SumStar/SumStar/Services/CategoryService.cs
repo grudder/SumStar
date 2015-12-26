@@ -20,6 +20,31 @@ namespace SumStar.Services
 		/// 获取下级子栏目的树节点。
 		/// </summary>
 		/// <param name="categoryId">栏目标识。</param>
+		/// <param name="archor">链接锚点。</param>
+		/// <returns>下级子栏目的树节点。</returns>
+		public IList<BootstrapTreeNode> GetBootstrapTreeNodes(int categoryId, string archor)
+		{
+			var query = from category in _dbContext.Categories
+						where category.ParentId == categoryId
+						orderby category.DisplayOrder
+						select new BootstrapTreeNode
+						{
+							Text = category.Name,
+							Href = "/Contents/List?categoryId=" + category.Id + "#" + archor,
+							Tags = new[] { category.Id.ToString() }
+						};
+			IList<BootstrapTreeNode> nodes = query.ToList();
+			foreach (var node in nodes)
+			{
+				node.Nodes = GetBootstrapTreeNodes(int.Parse(node.Tags[0]), archor);
+			}
+			return nodes;
+		}
+
+		/// <summary>
+		/// 获取下级子栏目的树节点。
+		/// </summary>
+		/// <param name="categoryId">栏目标识。</param>
 		/// <returns>下级子栏目的树节点。</returns>
 		public List<ZTreeNode> GetChildTreeNodes(int? categoryId)
 		{

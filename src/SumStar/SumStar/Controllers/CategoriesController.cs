@@ -66,14 +66,27 @@ namespace SumStar.Controllers
 		}
 
 		// GET: Categories/TreePanelPartial/5
-		public PartialViewResult TreePanelPartial(Category category)
+		public PartialViewResult TreePanelPartial(Category category, Category level1Category)
 		{
-			Category level1Category = CategoryService.GetLevel1Category(category);
 			IList<Category> categories = CategoryService.GetChilds(level1Category.Id);
 			ViewBag.Level1Category = level1Category;
             return PartialView("_TreePanelPartial", categories);
 		}
+		
+		// GET: Categories/GetBootstrapTree/5?archor=treeCategory
+		public ActionResult GetBootstrapTree(int id, string archor)
+		{
+			IList<BootstrapTreeNode> treeNodes = CategoryService.GetBootstrapTreeNodes(id, archor);
+			string json = JsonConvert.SerializeObject(
+				treeNodes,
+				new JsonSerializerSettings
+				{
+					NullValueHandling = NullValueHandling.Ignore
+				});
 
+			return Content(json);
+		}
+		
 		// GET: Categories/GetChildTreeNodes/5
 		public ActionResult GetChildTreeNodes(int? id)
 		{

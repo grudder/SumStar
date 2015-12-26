@@ -1,7 +1,7 @@
 ﻿@using SumStar.Models
 @model IList<Category>
 
-<div class="panel panel-primary">
+<div class="panel panel-category">
 	<div class="panel-heading">
 		<div class="row">
 			<div class="col-md-12">
@@ -11,13 +11,6 @@
 			</div>
 		</div>
 	</div>
-	<ul class="list-group">
-		@foreach (Category category in Model)
-		{
-			<li class="list-group-item">
-				<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-				@Html.ActionLink(category.Name, "List", "Contents", new {categoryId = category.Id}, null)
-			</li>
-		}
+	<ul id="treeCategory" class="list-group">
 	</ul>
 </div>
