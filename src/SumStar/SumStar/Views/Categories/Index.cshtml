@@ -38,6 +38,7 @@
 			<tr>
 				<th>名称</th>
 				<th>内容类型</th>
+				<th>显示方式</th>
 				<th>显示顺序</th>
 				<th>操作</th>
 			</tr>
@@ -70,10 +71,44 @@
 					columns: [
 						{ data: "Name" },
 						{ data: "ContentType" },
+						{ data: "DisplayMode" },
 						{ data: "DisplayOrder" },
 						{ data: null, orderable: false }
 					],
 					columnDefs: [
+						{
+							render: function (data, type, row) {
+								var value = "";
+								switch (data) {
+									case 0:
+										value = "文章";
+										break;
+									case 1:
+										value = "图片";
+										break;
+								}
+								return value;
+							},
+							targets: 1
+						},
+						{
+							render: function (data, type, row) {
+								var value = "";
+								switch (data) {
+									case 0:
+										value = "标题列表";
+										break;
+									case 1:
+										value = "图片列表";
+										break;
+									case 2:
+										value = "第一篇文章的详细内容";
+										break;
+								}
+								return value;
+							},
+							targets: 2
+						},
 						{
 							render: function(data, type, row) {
 								var id = row.Id;
@@ -81,10 +116,10 @@
 								link += "&nbsp;<a href='@Url.Action("Delete")/" + id + "'>删除</a>";
 								return link;
 							},
-							targets: 3
+							targets: 4
 						}
 					],
-					order: [[2, "desc"]] // 默认排序
+					order: [[3, "desc"]] // 默认排序
 				});
 			};
 

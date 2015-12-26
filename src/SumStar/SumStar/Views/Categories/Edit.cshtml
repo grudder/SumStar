@@ -14,20 +14,13 @@
 		<hr/>
 		@Html.ValidationSummary(true, "", new {@class = "text-danger"})
 		@Html.HiddenFor(model => model.Id)
-		@Html.HiddenFor(model => model.ParentId)
 		@Html.HiddenFor(model => model.CreateBy)
 
 		<div class="form-group">
             @Html.LabelFor(model => model.Parent, new { @class = "control-label col-md-2" })
 			<div class="col-md-10">
-				@if (Model.Parent == null)
-				{
-					<input type="text" class="form-control text-box single-line valid" readonly="readonly" value="网站栏目" />
-				}
-				else
-				{
-					<input type="text" class="form-control text-box single-line" readonly="readonly" value="@Model.Parent.Name" />
-				}
+				@Html.HiddenFor(model => model.ParentId)
+				<input type="text" class="form-control text-box single-line" readonly="readonly" value="@Model.Parent.Name" />
 			</div>
 		</div>
 
@@ -52,6 +45,14 @@
 			<div class="col-md-10">
 				@Html.EnumDropDownListFor(model => model.ContentType, new {@class = "form-control"})
 				@Html.ValidationMessageFor(model => model.ContentType, "", new {@class = "text-danger"})
+			</div>
+		</div>
+
+		<div class="form-group">
+			@Html.LabelFor(model => model.DisplayMode, new {@class = "control-label col-md-2"})
+			<div class="col-md-10">
+				@Html.EnumDropDownListFor(model => model.DisplayMode, new {@class = "form-control"})
+				@Html.ValidationMessageFor(model => model.DisplayMode, "", new {@class = "text-danger"})
 			</div>
 		</div>
 

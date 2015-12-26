@@ -120,10 +120,15 @@ namespace SumStar.Controllers
 		[Authorize(Roles = "ContentAdmin")]
 		public ActionResult Create(int? id)
 		{
-			var categories = DbContext.Categories.ToList();
-			ViewBag.ParentId = new SelectList(categories, "Id", "Name", id);
+			Category parentCategory = DbContext.Categories.Find(id);
+            var category = new Category
+			{
+				ParentId = id,
+				Parent = parentCategory,
+				DisplayMode = parentCategory?.DisplayMode
+			};
 			
-			return View();
+			return View(category);
 		}
 		
 		// POST: Categories/Create
@@ -133,7 +138,7 @@ namespace SumStar.Controllers
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		public ActionResult Create(
-			[Bind(Include = "Id,ParentId,DisplayOrder,Name,ContentType,Remark")] Category category)
+			[Bind(Include = "Id,ParentId,DisplayOrder,Name,ContentType,DisplayMode,Remark")] Category category)
 		{
 			category.CreateBy = HttpContext.User.Identity.GetUserId();
 			category.CreateTime = DateTime.Now;
@@ -145,9 +150,7 @@ namespace SumStar.Controllers
 				DbContext.SaveChanges();
 				return RedirectToAction("Index");
 			}
-
-			var categories = DbContext.Categories.ToList();
-			ViewBag.ParentId = new SelectList(categories, "Id", "Name", category.ParentId);
+			
 			return View(category);
 		}
 
@@ -175,14 +178,10 @@ namespace SumStar.Controllers
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		public ActionResult Edit(
-			[Bind(Include = "Id,ParentId,DisplayOrder,Name,ContentType,Remark,CreateBy,CreateTime")] Category category)
+			[Bind(Include = "Id,ParentId,DisplayOrder,Name,ContentType,DisplayMode,Remark,CreateBy,CreateTime")] Category category)
 		{
 			if (ModelState.IsValid)
 			{
-				if (category.ParentId == 0)
-				{
-					category.ParentId = null;
-				}
 				DbContext.Entry(category).State = EntityState.Modified;
 				DbContext.SaveChanges();
 				return RedirectToAction("Index");
