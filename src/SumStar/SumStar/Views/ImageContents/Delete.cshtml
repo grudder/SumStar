@@ -73,7 +73,7 @@
 
 		<div class="form-actions no-color">
 			<input type="submit" value="删除" class="btn btn-primary"/>
-			@Html.ActionLink("返回", "Index", "Contents", new {categoryId = @Model.CategoryId}, new {@class = "btn btn-default"})
+			@Html.ActionLink("返回", "Index", "Contents", new {ViewBag.CategoryId}, new {@class = "btn btn-default"})
 		</div>
 	}
 </div>

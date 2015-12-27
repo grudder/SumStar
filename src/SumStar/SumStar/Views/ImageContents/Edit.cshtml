@@ -77,7 +77,7 @@
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
 				<input type="submit" class="btn btn-primary" value="保存" />
-				@Html.ActionLink("返回", "Index", "Contents", null, new {@class = "btn btn-default"})
+				@Html.ActionLink("返回", "Index", "Contents", new {ViewBag.CategoryId}, new {@class = "btn btn-default"})
             </div>
         </div>
     </div>

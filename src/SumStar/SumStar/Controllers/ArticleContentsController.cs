@@ -89,6 +89,7 @@ namespace SumStar.Controllers
 				CategoryId = categoryId,
 				Category = DbContext.Categories.Find(categoryId)
 			};
+			ViewBag.CategoryId = categoryId;
 
 			return View(articleContent);
 		}
@@ -146,6 +147,7 @@ namespace SumStar.Controllers
 			{
 				return HttpNotFound();
 			}
+			ViewBag.CategoryId = articleContent.CategoryId;
 			return View(articleContent);
 		}
 
@@ -205,6 +207,7 @@ namespace SumStar.Controllers
 			{
 				return HttpNotFound();
 			}
+			ViewBag.CategoryId = articleContent.CategoryId;
 			return View(articleContent);
 		}
 

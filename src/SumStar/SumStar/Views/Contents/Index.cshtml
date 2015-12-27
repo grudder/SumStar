@@ -30,7 +30,7 @@
 	</div>
 	<div class="col-md-9">
 		<p>
-			@Html.ActionLink("新增", "Create", null, new { id = "link-create" })
+			@Html.ActionLink("新增", "Create", new {ViewBag.CategoryId}, new { id = "link-create" })
 		</p>
 		<table id="table-content" class="table table-striped table-hover">
 			<thead>
@@ -85,8 +85,8 @@
 						{
 							render: function(data, type, row) {
 								var id = row.Id;
-								var link = "<a href='@Url.Action("Edit")/" + id + "'>修改</a>";
-								link += "&nbsp;<a href='@Url.Action("Delete")/" + id + "'>删除</a>";
+								var link = "<a href='@Url.Action("Edit")/" + id + "?categoryId=" + categoryId + "'>修改</a>";
+								link += "&nbsp;<a href='@Url.Action("Delete")/" + id + "?categoryId=" + categoryId + "'>删除</a>";
 								return link;
 							},
 							targets: 3
@@ -130,9 +130,11 @@
 				}
 			};
 
-			$.fn.zTree.init($("#treeCategory"), setting);
+			var tree = $.fn.zTree.init($("#treeCategory"), setting);
+			console.log(tree);
+			tree.expandAll(true);
 
-			showContentTable(1);
+			showContentTable(@ViewBag.CategoryId);
 		});
 	</script>
 }

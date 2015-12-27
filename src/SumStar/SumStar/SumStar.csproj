@@ -621,7 +621,6 @@
     <Content Include="Views\Shared\_FooterPartial.cshtml" />
     <Content Include="Views\Contents\List.cshtml" />
     <Content Include="Views\Categories\_NavigatorPartial.cshtml" />
-    <Content Include="Views\ArticleContents\Detail.cshtml" />
     <Content Include="Views\Shared\_ContentLayout.cshtml" />
     <Content Include="Views\Categories\_TreePanelPartial.cshtml" />
     <Content Include="Views\ArticleContents\List.cshtml" />
