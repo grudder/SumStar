@@ -9,6 +9,8 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 
+using PagedList;
+
 using SumStar.DataAccess;
 using SumStar.Models;
 using SumStar.Services;
@@ -17,8 +19,9 @@ namespace SumStar.Controllers
 {
 	public class ArticleContentsController : Controller
 	{
-		private readonly CategoryService _categoryService;
 		private ApplicationDbContext _dbContext;
+		private readonly CategoryService _categoryService;
+		private readonly ContentService _contentService;
 
 		private readonly string _uploadPath = ConfigurationManager.AppSettings["UploadPath"];
 
@@ -30,6 +33,7 @@ namespace SumStar.Controllers
 		{
 			DbContext = dbContext;
 			_categoryService = new CategoryService(DbContext);
+			_contentService = new ContentService(DbContext);
 		}
 
 		public ApplicationDbContext DbContext
@@ -45,6 +49,20 @@ namespace SumStar.Controllers
 		}
 
 		public CategoryService CategoryService => _categoryService ?? new CategoryService(DbContext);
+
+		public ContentService ContentService => _contentService ?? new ContentService(DbContext);
+
+		// GET: ArticleContents/List?categoryId=5&pageSize=15&page=1
+		public ActionResult List(int categoryId, int? pageSize, int? page)
+		{
+			IPagedList<ArticleContent> pagedList = ContentService.GetArticleContentsByCategory(categoryId, pageSize, page);
+
+			Category category = DbContext.Categories.Find(categoryId);
+			ViewBag.Category = category;
+			ViewBag.Level1Category = CategoryService.GetLevel1Category(category);
+
+			return View(pagedList);
+		}
 
 		// GET: ArticleContents/Detail/5
 		public ActionResult Detail(int? id)

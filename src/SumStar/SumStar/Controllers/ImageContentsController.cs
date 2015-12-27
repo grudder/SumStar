@@ -9,6 +9,8 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 
+using PagedList;
+
 using SumStar.DataAccess;
 using SumStar.Models;
 using SumStar.Services;
@@ -17,8 +19,8 @@ namespace SumStar.Controllers
 {
 	public class ImageContentsController : Controller
 	{
-		private readonly CategoryService _categoryService;
 		private ApplicationDbContext _dbContext;
+		private readonly CategoryService _categoryService;
 
 		private readonly string _uploadPath = ConfigurationManager.AppSettings["UploadPath"];
 

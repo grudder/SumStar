@@ -1,0 +1,42 @@
+﻿@using PagedList
+@using PagedList.Mvc
+@using SumStar.Models
+
+@model IPagedList<ArticleContent>
+
+@{
+	Layout = "~/Views/Shared/_ContentLayout.cshtml";
+	ViewBag.Title = @ViewBag.Category.Name;
+}
+
+<div class="container-fluid">
+	<div class="row">
+	</div>
+	<div class="row">
+		@for (int i = 0; i < Model.Count; ++i)
+		{
+			var item = Model[i];
+			<div class="col-md-4">
+				<div class="thumbnail">
+					<div class="caption">
+						<h4 class="text-center">
+							<a href="@Url.Action("Detail", "ArticleContents", new {item.Id})">
+								@item.Title
+							</a>
+						</h4>
+					</div>
+					<a href="@Url.Action("Detail", "ArticleContents", new {item.Id})">
+						<img src="@item.TopicImage" alt="@item.Title" />
+					</a>
+				</div>
+			</div>
+			if ((i + 1) % 3 == 0 && i != 0 && i != Model.Count - 1)
+			{
+				@:</div>
+				@:<div class="row">
+			}
+		}
+	</div>
+</div>
+
+@Html.PagedListPager(Model, page => Url.Action("List", new {categoryId = ViewBag.Category.Id, page}))

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
 
@@ -16,7 +15,7 @@ namespace SumStar.Services
 	{
 		private readonly ApplicationDbContext _dbContext;
 
-		private CategoryService _categoryService;
+		private readonly CategoryService _categoryService;
 
 		public ContentService(ApplicationDbContext dbContext)
 		{
@@ -44,6 +43,29 @@ namespace SumStar.Services
 			pageSize = (pageSize ?? 20);
 			pageIndex = (pageIndex ?? 1);
 			IPagedList<Content> pagedList = query.Where(predicate).ToPagedList(pageIndex.Value, pageSize.Value);
+			return pagedList;
+		}
+
+		/// <summary>
+		/// 获取栏目下的分页图片内容。
+		/// </summary>
+		/// <param name="categoryId">栏目标识。</param>
+		/// <param name="pageSize">页面大小。</param>
+		/// <param name="pageIndex">页面索引。</param>
+		/// <returns>栏目下的图片内容。</returns>
+		public IPagedList<ArticleContent> GetArticleContentsByCategory(int categoryId, int? pageSize, int? pageIndex)
+		{
+			Expression<Func<ArticleContent, bool>> predicate = i => i.CategoryId == categoryId;
+			IList<Category> categories = _categoryService.GetChilds(categoryId, true);
+			predicate = categories.Aggregate(predicate, (current, c) => current.Or(i => i.CategoryId == c.Id));
+
+			var query = from content in _dbContext.ArticleContents
+						orderby content.DisplayOrder descending
+						select content;
+			// 分页处理
+			pageSize = (pageSize ?? 15);
+			pageIndex = (pageIndex ?? 1);
+			IPagedList<ArticleContent> pagedList = query.Where(predicate).ToPagedList(pageIndex.Value, pageSize.Value);
 			return pagedList;
 		}
 

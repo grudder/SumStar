@@ -89,12 +89,13 @@ namespace SumStar.Helper
 			else
 			{
 				IQueryable<TEntity> query = dbSet.Where(predicate);
+				int count = query.Count();
+
 				query = (orderDir == "desc")
 					? query.OrderByDescending(orderColumnName)
 					: query.OrderBy(orderColumnName);
 				data = query.Skip(start).Take(length).ToList();
 
-				int count = data.Count;
 				dataTable.RecordsTotal = count;
 				dataTable.RecordsFiltered = count;
 				dataTable.Data = data;

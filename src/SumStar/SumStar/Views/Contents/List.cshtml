@@ -24,4 +24,4 @@
 	</tbody>
 </table>
 
-@Html.PagedListPager(Model, page => Url.Action("Index", new {page}))
+@Html.PagedListPager(Model, page => Url.Action("List", new {categoryId = ViewBag.Category.Id, page}))

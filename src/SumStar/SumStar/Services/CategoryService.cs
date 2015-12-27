@@ -78,7 +78,7 @@ namespace SumStar.Services
 			{
 				return categories;
 			}
-			return categories.Concat(categories.SelectMany(category => GetChilds(category.Id))).ToList();
+			return categories.Concat(categories.SelectMany(category => GetChilds(category.Id, true))).ToList();
 		}
 
 		/// <summary>

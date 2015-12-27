@@ -56,8 +56,11 @@ namespace SumStar.Controllers
 		// GET: Contents?categoryId=5
 		public ActionResult Index(int? categoryId)
 		{
-			Category category = DbContext.Categories.Find(categoryId);
-			ViewBag.ContentType = category?.ContentType;
+			if (categoryId == null)
+			{
+				categoryId = 1;
+			}
+			ViewBag.CategoryId = categoryId;
 
 			return View();
 		}
@@ -80,7 +83,7 @@ namespace SumStar.Controllers
 			return Content(json);
 		}
 
-		// GET: Contents/List?categoryId=5&categoryName=新闻动态&pageSize=10&page=1
+		// GET: Contents/List?categoryId=5&categoryName=新闻动态&pageSize=20&page=1
 		public ActionResult List(int? categoryId, string categoryName, int? pageSize, int? page)
 		{
 			Category category;
@@ -108,6 +111,7 @@ namespace SumStar.Controllers
 					break;
 
 				case CategoryDisplayMode.ImageList:
+					actionResult = RedirectToAction("List", "ArticleContents", new {categoryId = category.Id});
 					break;
 
 				case CategoryDisplayMode.FirstContentDetail:
