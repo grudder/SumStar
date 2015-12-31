@@ -22,7 +22,7 @@ namespace SumStar.Models.ViewModels
 			set;
 		}
 
-		[Display(Name = "记住我?")]
+		[Display(Name = "记住我？")]
 		public bool RememberMe
 		{
 			get;

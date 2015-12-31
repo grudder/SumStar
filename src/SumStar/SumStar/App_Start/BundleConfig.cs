@@ -28,6 +28,7 @@ namespace SumStar
 
 			bundles.Add(new StyleBundle("~/Content/css").Include(
 				"~/Content/bootstrap.css",
+				"~/Content/bootstrap-theme.css",
 				"~/Content/Site.css"));
 
 			bundles.Add(new StyleBundle("~/Content/css/dataTables").Include(

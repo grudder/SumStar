@@ -123,6 +123,13 @@ namespace SumStar.Controllers
 			return actionResult;
 		}
 
+		[Authorize]
+		// GET: Contents/List?categoryId=5&categoryName=新闻动态&pageSize=20&page=1
+		public ActionResult IntranetList(int? categoryId, string categoryName, int? pageSize, int? page)
+		{
+			return RedirectToAction("List", "Contents", new {categoryId, categoryName, pageSize, page});
+		}
+
 		// GET: Contents/Detail/5
 		public ActionResult Detail(int? id)
 		{

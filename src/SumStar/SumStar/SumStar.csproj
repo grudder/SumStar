@@ -553,13 +553,12 @@
     <Content Include="Content\UEditor\third-party\video-js\font\vjs.woff" />
     <Content Include="Content\UEditor\config.json" />
     <None Include="Properties\PublishProfiles\IIS部署.pubxml" />
+    <Content Include="Scripts\jquery-1.11.3.js" />
+    <Content Include="Scripts\jquery-1.11.3.min.js" />
     <Content Include="Scripts\jquery.dataTables.zhCn.json" />
-    <None Include="Scripts\jquery-2.1.4.intellisense.js" />
+    <Content Include="Scripts\jquery-1.11.3.min.map" />
     <Content Include="Scripts\dataTables.bootstrap.js" />
     <Content Include="Scripts\dataTables.bootstrap.min.js" />
-    <Content Include="Scripts\jquery-2.1.4.js" />
-    <Content Include="Scripts\jquery-2.1.4.min.js" />
-    <Content Include="Scripts\jquery-2.1.4.min.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.dataTables.js" />
     <Content Include="Scripts\jquery.dataTables.min.js" />
@@ -624,6 +623,7 @@
     <Content Include="Views\Shared\_ContentLayout.cshtml" />
     <Content Include="Views\Categories\_TreePanelPartial.cshtml" />
     <Content Include="Views\ArticleContents\List.cshtml" />
+    <Content Include="Views\ArticleContents\Detail.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
