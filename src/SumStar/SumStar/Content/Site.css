@@ -28,17 +28,12 @@ td.right-align {
 }
 
 .navbar-logo {
-	min-height: 95px;
-}
-
-.logo {
-	width: 161px;
-	height: 95px;
-	background: url("images/logo.jpg") no-repeat center center;
+	margin-top: -15px;
+	min-height: 63px;
 }
 
 .nav > li.logo-right {
-	padding-top: 25px;
+	padding-top: 20px;
 }
 
 	.nav > li.logo-right > a {
@@ -80,7 +75,7 @@ td.right-align {
 	}
 
 #content-header {
-	height: 461px;
+	height: 375px;
 	background: url("images/bg-content-header.jpg") no-repeat center center;
 }
 
@@ -89,7 +84,7 @@ td.right-align {
 		font-size: 48px;
 		font-weight: bolder;
 		text-align: center;
-		line-height: 461px;
+		line-height: 375px;
 		margin-top: 0;
 	}
 

@@ -37,7 +37,7 @@ namespace SumStar.Services
 			predicate = categories.Aggregate(predicate, (current, c) => current.Or(i => i.CategoryId == c.Id));
 
 			var query = from content in _dbContext.Contents
-						orderby content.DisplayOrder descending
+						orderby content.DisplayOrder descending, content.CreateTime descending
 						select content;
 			// 分页处理
 			pageSize = (pageSize ?? 20);
@@ -60,7 +60,7 @@ namespace SumStar.Services
 			predicate = categories.Aggregate(predicate, (current, c) => current.Or(i => i.CategoryId == c.Id));
 
 			var query = from content in _dbContext.ArticleContents
-						orderby content.DisplayOrder descending
+						orderby content.DisplayOrder descending, content.CreateTime descending
 						select content;
 			// 分页处理
 			pageSize = (pageSize ?? 15);
@@ -94,7 +94,7 @@ namespace SumStar.Services
 			}
 			var query = from content in _dbContext.Contents
 						where content.CategoryId == categoryId
-						orderby content.DisplayOrder
+						orderby content.DisplayOrder, content.CreateTime descending
 						select content;
 			return query.Take(1).SingleOrDefault();
 		}

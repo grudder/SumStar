@@ -1,7 +1,9 @@
 ﻿<div class="navbar-logo">
 	<div class="container">
 		<div class="navbar-header">
-			@Html.ActionLink(" ", "Index", "Home", new {area = ""}, new {@class = "navbar-brand logo"})
+			<a href="@Url.Action("Index", "Home")" class="navbar-brand logo">
+				<img src="@Url.Content("~/Content/images/logo.jpg")" width="100" height="60" />
+			</a>
 		</div>
 		<div class="navbar-collapse collapse">
 			<ul class="nav navbar-nav navbar-right">

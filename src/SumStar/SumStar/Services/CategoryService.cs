@@ -26,7 +26,7 @@ namespace SumStar.Services
 		{
 			var query = from category in _dbContext.Categories
 						where category.ParentId == categoryId
-						orderby category.DisplayOrder
+						orderby category.DisplayOrder descending, category.CreateTime descending
 						select new BootstrapTreeNode
 						{
 							Text = category.Name,
@@ -50,7 +50,7 @@ namespace SumStar.Services
 		{
 			var query = from category in _dbContext.Categories
 						where category.ParentId == categoryId
-						orderby category.DisplayOrder
+						orderby category.DisplayOrder descending, category.CreateTime descending
 						select new ZTreeNode
 						{
 							Id = category.Id,
@@ -71,7 +71,7 @@ namespace SumStar.Services
 		{
 			var query = from category in _dbContext.Categories
 						where category.ParentId == categoryId
-						orderby category.DisplayOrder
+						orderby category.DisplayOrder descending, category.CreateTime descending
 						select category;
 			IList<Category> categories = query.ToList();
 			if (!recursive)
