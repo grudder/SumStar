@@ -38,6 +38,7 @@ td.right-align {
 
 	.nav > li.logo-right > a {
 		display: inline;
+		font-size: 12px;
 	}
 
 		.nav > li.logo-right > a:hover,
