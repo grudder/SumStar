@@ -195,7 +195,7 @@ namespace SumStar.Controllers
 				}
 			}
 
-			DbContext.Contents.Remove(imageContent);
+			DbContext.ImageContents.Remove(imageContent);
 			DbContext.SaveChanges();
 			return RedirectToAction("Index", "Contents", new {categoryId = imageContent.CategoryId});
 		}

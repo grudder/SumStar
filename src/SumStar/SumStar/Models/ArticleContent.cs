@@ -9,6 +9,14 @@ namespace SumStar.Models
 	[DisplayColumn("Title")]
 	public class ArticleContent : Content
 	{
+		[Required]
+		[Display(Name = "内容页是否显示标题")]
+		public bool TitleVisibleInContent
+		{
+			get;
+			set;
+		}
+
 		[Display(Name = "题图")]
 		[StringLength(200)]
 		public string TopicImage

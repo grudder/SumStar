@@ -6,7 +6,10 @@
 	ViewBag.Title = @ViewBag.Category.Name;
 }
 
-<h2>@Model.Title</h2>
+@if (Model.TitleVisibleInContent)
+{
+	<h2>@Model.Title</h2>
+}
 <p>
 	@Html.Raw(Model.Content)
 </p>

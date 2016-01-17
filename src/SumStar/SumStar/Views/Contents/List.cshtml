@@ -17,7 +17,7 @@
 				@Html.ActionLink(item.Title, "Detail", "Contents", new {item.Id}, null)
 			</td>
 			<td class="right-align">
-				@Html.DisplayFor(modelItem => item.CreateTime)
+				@item.CreateTime.ToString("yyyy-MM-dd")
 			</td>
 		</tr>
 	}

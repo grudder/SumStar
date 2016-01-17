@@ -87,7 +87,8 @@ namespace SumStar.Controllers
 			var articleContent = new ArticleContent
 			{
 				CategoryId = categoryId,
-				Category = DbContext.Categories.Find(categoryId)
+				Category = DbContext.Categories.Find(categoryId),
+				TitleVisibleInContent = true
 			};
 			ViewBag.CategoryId = categoryId;
 
@@ -228,8 +229,9 @@ namespace SumStar.Controllers
 				}
 			}
 
-			DbContext.Contents.Remove(articleContent);
+			DbContext.ArticleContents.Remove(articleContent);
 			DbContext.SaveChanges();
+			
 			return RedirectToAction("Index", "Contents", new {categoryId = articleContent.CategoryId});
 		}
 
