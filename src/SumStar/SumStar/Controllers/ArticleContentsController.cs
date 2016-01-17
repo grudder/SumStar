@@ -101,7 +101,7 @@ namespace SumStar.Controllers
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		[ValidateInput(false)]
-		public ActionResult Create([Bind(Include = "Id,CategoryId,Title,DisplayOrder,TopicImage,Author,Content")] ArticleContent articleContent,
+		public ActionResult Create([Bind(Include = "Id,CategoryId,Title,TitleVisibleInContent,DisplayOrder,TopicImage,Author,Content")] ArticleContent articleContent,
 			HttpPostedFileBase topicImageFile)
 		{
 			if (topicImageFile != null && topicImageFile.ContentLength > 0)
@@ -127,7 +127,7 @@ namespace SumStar.Controllers
 
 			if (ModelState.IsValid)
 			{
-				DbContext.Contents.Add(articleContent);
+				DbContext.ArticleContents.Add(articleContent);
 				DbContext.SaveChanges();
 				return RedirectToAction("Index", "Contents", new {categoryId = articleContent.CategoryId});
 			}
@@ -158,7 +158,7 @@ namespace SumStar.Controllers
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		[ValidateInput(false)]
-		public ActionResult Edit([Bind(Include = "Id,CategoryId,Title,DisplayOrder,TopicImage,Author,Content,CreateBy,CreateTime")] ArticleContent
+		public ActionResult Edit([Bind(Include = "Id,CategoryId,Title,TitleVisibleInContent,DisplayOrder,TopicImage,Author,Content,CreateBy,CreateTime")] ArticleContent
 				articleContent, HttpPostedFileBase topicImageFile)
 		{
 			if (ModelState.IsValid)

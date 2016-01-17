@@ -93,7 +93,7 @@ namespace SumStar.Controllers
 					imageContent.ImageUrl = fileUrl;
 				}
 
-				DbContext.Contents.Add(imageContent);
+				DbContext.ImageContents.Add(imageContent);
 				DbContext.SaveChanges();
 				return RedirectToAction("Index", "Contents", new {categoryId = imageContent.CategoryId});
 			}
