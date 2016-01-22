@@ -41,7 +41,7 @@ namespace SumStar.Models
 
 		[Required]
 		[Display(Name = "名称")]
-		[StringLength(20)]
+		[StringLength(80)]
 		public string Name
 		{
 			get;
