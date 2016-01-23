@@ -9,8 +9,6 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 
-using PagedList;
-
 using SumStar.DataAccess;
 using SumStar.Models;
 using SumStar.Services;

@@ -38,6 +38,13 @@ namespace SumStar.Models
 			get;
 			set;
 		}
+		
+		[Display(Name = "是否为英文")]
+		public bool IsEnglish
+		{
+			get;
+			set;
+		}
 
 		[Required]
 		[Display(Name = "名称")]

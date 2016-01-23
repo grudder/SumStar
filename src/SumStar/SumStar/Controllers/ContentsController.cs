@@ -120,6 +120,7 @@ namespace SumStar.Controllers
 					break;
 			}
 
+			ViewBag.IsEnglish = category.IsEnglish;
 			return actionResult;
 		}
 

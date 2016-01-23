@@ -2,19 +2,34 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta charset="utf-8" />
+	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewBag.Title - 群星集团</title>
-    @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
+	<title>
+		@ViewBag.Title
+		-
+		@if (ViewBag.IsEnglish != null && ViewBag.IsEnglish == true)
+		{
+			<text>Sumstar Group Corp.</text>
+		}
+		else
+		{
+			@:群星集团
+		}
+	</title>
+	@Styles.Render("~/Content/css")
+	@Scripts.Render("~/bundles/modernizr")
 	@RenderSection("header", false)
+	@if (ViewBag.IsEnglish != null && ViewBag.IsEnglish == true)
+	{
+		<link href="~/Content/Site-En.css" rel="stylesheet" />
+	}
 </head>
 <body>
-	@Html.Partial("_NavBarPartial")
+	@((ViewBag.IsEnglish != null && ViewBag.IsEnglish == true) ? Html.Partial("_NavBarEnPartial") : Html.Partial("_NavBarPartial"))
 
 	@RenderBody()
 
-	@Html.Partial("_FooterPartial")
+	@((ViewBag.IsEnglish != null && ViewBag.IsEnglish == true) ? Html.Partial("_FooterEnPartial") : Html.Partial("_FooterPartial"))
 
 	@Scripts.Render("~/bundles/jquery")
 	@Scripts.Render("~/bundles/bootstrap")

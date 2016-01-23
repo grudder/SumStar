@@ -1,0 +1,36 @@
+﻿@using SumStar.Models
+@model IList<Content>
+
+@{
+	Layout = "~/Views/Shared/_Layout.cshtml";
+	ViewBag.Title = "Index";
+}
+
+@section header {
+	<link href="~/Content/jquery.simplyscroll.css" rel="stylesheet" />
+	<link href="~/Content/Site-Index.css" rel="stylesheet" />
+}
+
+<div class="body-index">
+	<ul id="image-scroller">
+		@foreach (Content content in Model)
+		{
+			var imageContent = (ImageContent)content;
+			<li>
+				<a href="@imageContent.LinkUrl">
+					<img src="@imageContent.ImageUrl" height="140" />
+				</a>
+			</li>
+		}
+	</ul>
+</div>
+
+@section scripts {
+	<script type="text/javascript" src='@Url.Content("~/Scripts/jquery.simplyscroll.min.js")'></script>
+	<script type="text/javascript">
+		$(function () {
+			// 英文图片滚动栏
+			$("#image-scroller").simplyScroll({ pauseOnHover: true, manualMode: "loop" });
+		});
+	</script>
+}

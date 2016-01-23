@@ -43,6 +43,17 @@ namespace SumStar.Controllers
 		public ActionResult Index()
 		{
 			IList<Content> contents = ContentService.GetByCategory("首页滚动图");
+
+			ViewBag.IsEnglish = false;
+			return View(contents);
+		}
+
+		// GET: /Home/IndexEn
+		public ActionResult IndexEn()
+		{
+			IList<Content> contents = ContentService.GetByCategory("英文首页滚动图");
+
+			ViewBag.IsEnglish = true;
 			return View(contents);
 		}
 	}

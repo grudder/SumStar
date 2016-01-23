@@ -232,6 +232,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\dataTables.bootstrap.css" />
     <Content Include="Content\dataTables.bootstrap.min.css" />
+    <Content Include="Content\images\bg-index-en.jpg" />
     <Content Include="Content\images\bg-index.jpg" />
     <Content Include="Content\images\favicon.ico" />
     <Content Include="Content\images\logo.jpg" />
@@ -249,6 +250,7 @@
     <Content Include="Content\jquery.dataTables_themeroller.css" />
     <Content Include="Content\jquery.simplyscroll.css" />
     <Content Include="Content\PagedList.css" />
+    <Content Include="Content\Site-En.css" />
     <Content Include="Content\Site-Index.css" />
     <Content Include="Content\UEditor\dialogs\anchor\anchor.html" />
     <Content Include="Content\UEditor\dialogs\attachment\attachment.css" />
@@ -624,6 +626,9 @@
     <Content Include="Views\Categories\_TreePanelPartial.cshtml" />
     <Content Include="Views\ArticleContents\List.cshtml" />
     <Content Include="Views\ArticleContents\Detail.cshtml" />
+    <Content Include="Views\Home\IndexEn.cshtml" />
+    <Content Include="Views\Shared\_FooterEnPartial.cshtml" />
+    <Content Include="Views\Shared\_NavBarEnPartial.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

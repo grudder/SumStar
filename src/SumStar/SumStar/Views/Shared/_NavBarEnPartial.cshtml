@@ -1,7 +1,7 @@
 ﻿<div class="navbar-logo">
 	<div class="container">
 		<div class="navbar-header">
-			<a href="@Url.Action("Index", "Home")" class="navbar-brand logo">
+			<a href="@Url.Action("IndexEn", "Home")" class="navbar-brand logo">
 				<img src="@Url.Content("~/Content/images/logo.jpg")" width="90" />
 			</a>
 		</div>
@@ -29,14 +29,12 @@
 		</div>
 		<div class="navbar-collapse collapse">
 			<ul class="nav navbar-nav">
-				<li>@Html.ActionLink("首页", "Index", "Home")</li>
-				<li>@Html.ActionLink("新闻动态", "List", "Contents", new {categoryName = "新闻动态"}, null)</li>
-				<li>@Html.ActionLink("化工原料", "List", "Contents", new {categoryName = "化工原料"}, null)</li>
-				<li>@Html.ActionLink("实业投资", "List", "Contents", new {categoryName = "实业投资"}, null)</li>
-				<li>@Html.ActionLink("核仪器设备", "List", "Contents", new {categoryName = "核仪器设备"}, null)</li>
-				<li>@Html.ActionLink("其他贸易", "List", "Contents", new {categoryName = "其他贸易"}, null)</li>
-				<li>@Html.ActionLink("党群建设", "List", "Contents", new {categoryName = "党群建设"}, null)</li>
-				<li>@Html.ActionLink("关于群星", "List", "Contents", new {categoryName = "关于群星"}, null)</li>
+				<li>@Html.ActionLink("Index", "IndexEn", "Home")</li>
+				<li>@Html.ActionLink("Chemical material", "List", "Contents", new {categoryName = "Chemical material"}, null)</li>
+				<li>@Html.ActionLink("Industrial investment", "List", "Contents", new {categoryName = "Industrial investment"}, null)</li>
+				<li>@Html.ActionLink("Other trades", "List", "Contents", new {categoryName = "Other trades"}, null)</li>
+				<li>@Html.ActionLink("The party construction", "List", "Contents", new {categoryName = "The party construction"}, null)</li>
+				<li>@Html.ActionLink("About Sumstar", "List", "Contents", new {categoryName = "About Sumstar"}, null)</li>
 			</ul>
 		</div>
 	</div>

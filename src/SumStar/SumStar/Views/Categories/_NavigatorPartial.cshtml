@@ -6,7 +6,14 @@
 	Category category = Model[i];
 	if (category.Id == 1)
 	{
-		@Html.ActionLink("首页", "Index", "Home")
+		if (ViewBag.IsEnglish)
+		{
+			@Html.ActionLink("Index", "IndexEn", "Home")
+		}
+		else
+		{
+			@Html.ActionLink("首页", "Index", "Home")
+		}
 	}
 	else
 	{

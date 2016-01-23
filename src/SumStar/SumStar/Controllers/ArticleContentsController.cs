@@ -60,6 +60,7 @@ namespace SumStar.Controllers
 			Category category = DbContext.Categories.Find(categoryId);
 			ViewBag.Category = category;
 			ViewBag.Level1Category = CategoryService.GetLevel1Category(category);
+			ViewBag.IsEnglish = category.IsEnglish;
 
 			return View(pagedList);
 		}
@@ -78,6 +79,7 @@ namespace SumStar.Controllers
 			}
 			ViewBag.Category = articleContent.Category;
 			ViewBag.Level1Category = CategoryService.GetLevel1Category(articleContent.Category);
+			ViewBag.IsEnglish = articleContent.Category.IsEnglish;
 			return View(articleContent);
 		}
 

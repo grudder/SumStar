@@ -61,7 +61,11 @@ namespace SumStar.Controllers
 		public PartialViewResult NavigatorPartial(int id)
 		{
 			IList<Category> categories = CategoryService.GetRecursiveParents(id, true);
-            return PartialView("_NavigatorPartial", categories);
+
+			Category category = categories.Last();
+			ViewBag.IsEnglish = category.IsEnglish;
+
+			return PartialView("_NavigatorPartial", categories);
 		}
 
 		// GET: Categories/TreePanelPartial/5
@@ -137,7 +141,7 @@ namespace SumStar.Controllers
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		public ActionResult Create(
-			[Bind(Include = "Id,ParentId,DisplayOrder,Name,ContentType,DisplayMode,Remark")] Category category)
+			[Bind(Include = "Id,ParentId,DisplayOrder,IsEnglish,Name,ContentType,DisplayMode,Remark")] Category category)
 		{
 			category.CreateBy = HttpContext.User.Identity.GetUserId();
 			category.CreateTime = DateTime.Now;
@@ -177,7 +181,7 @@ namespace SumStar.Controllers
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		public ActionResult Edit(
-			[Bind(Include = "Id,ParentId,DisplayOrder,Name,ContentType,DisplayMode,Remark,CreateBy,CreateTime")] Category category)
+			[Bind(Include = "Id,ParentId,DisplayOrder,IsEnglish,Name,ContentType,DisplayMode,Remark,CreateBy,CreateTime")] Category category)
 		{
 			if (ModelState.IsValid)
 			{
