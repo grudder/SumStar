@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using System.Collections.Generic;
+
+using Newtonsoft.Json;
 
 namespace SumStar.Models.ViewModels
 {
@@ -48,6 +50,13 @@ namespace SumStar.Models.ViewModels
 
 		[JsonProperty("contentType")]
 		public string ContentType
+		{
+			get;
+			set;
+		}
+
+		[JsonProperty("children")]
+		public IList<ZTreeNode> Children
 		{
 			get;
 			set;

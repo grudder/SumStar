@@ -55,10 +55,16 @@ namespace SumStar.Services
 						{
 							Id = category.Id,
 							Name = category.Name,
-							IsParent = true,
 							ContentType = category.ContentType.ToString()
 						};
-			return query.ToList();
+
+			List<ZTreeNode> nodes = query.ToList();
+			foreach (ZTreeNode node in nodes)
+			{
+				node.Children = GetChildTreeNodes(node.Id);
+				node.IsParent = node.Children.Count > 0;
+			}
+			return nodes;
 		}
 
 		/// <summary>

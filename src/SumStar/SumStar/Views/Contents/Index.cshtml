@@ -96,25 +96,8 @@
 				});
 			};
 
-			var firstAsyncSuccessFlag = false;
 			var setting = {
-				async: {
-					enable: true,
-					url: '@Url.Action("GetChildTreeNodes", "Categories")',
-					autoParam: ["id"]
-				},
 				callback: {
-					onAsyncSuccess: function(event, treeId, msg) {
-						if (firstAsyncSuccessFlag === false) {
-							//调用默认展开第一个结点
-							var treeObj = $.fn.zTree.getZTreeObj("treeCategory");
-							var nodes = treeObj.getNodes();
-							treeObj.expandNode(nodes[0], true);
-							treeObj.selectNode(nodes[0]);
-
-							firstAsyncSuccessFlag = true;
-						}
-					},
 					onClick: function(event, treeId, treeNode) {
 						var categoryId = treeNode.id;
 						var contentType = treeNode.contentType;
@@ -130,11 +113,22 @@
 				}
 			};
 
-			var tree = $.fn.zTree.init($("#treeCategory"), setting);
-			console.log(tree);
-			tree.expandAll(true);
+			var url = '@Url.Action("GetTree", "Categories")';
+			$.get(url, function (data) {
+				var treeObj = $.fn.zTree.init($("#treeCategory"), setting, $.parseJSON(data));
+				var nodes = treeObj.getNodes();
+				var rootNode = nodes[0];
+				var categoryId = @ViewBag.CategoryId;
+				if (categoryId == 1) {
+					treeObj.expandNode(rootNode, true);
+				}
+				else {
+					var node = treeObj.getNodeByParam("id", categoryId, rootNode);
+					treeObj.selectNode(node);
+				}
 
-			showContentTable(@ViewBag.CategoryId);
+				showContentTable(categoryId);
+			});
 		});
 	</script>
 }

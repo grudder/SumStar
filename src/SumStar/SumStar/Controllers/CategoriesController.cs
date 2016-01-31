@@ -89,7 +89,21 @@ namespace SumStar.Controllers
 
 			return Content(json);
 		}
-		
+
+		// GET: Categories/GetTree
+		public ActionResult GetTree()
+		{
+			IList<ZTreeNode> treeNodes = CategoryService.GetChildTreeNodes(null);
+			string json = JsonConvert.SerializeObject(
+				treeNodes,
+				new JsonSerializerSettings
+				{
+					NullValueHandling = NullValueHandling.Ignore
+				});
+
+			return Content(json);
+		}
+
 		// GET: Categories/GetChildTreeNodes/5
 		public ActionResult GetChildTreeNodes(int? id)
 		{
