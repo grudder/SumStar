@@ -38,7 +38,14 @@ namespace SumStar.Models
 			get;
 			set;
 		}
-		
+
+		[Display(Name = "是否为末级")]
+		public bool IsLeaf
+		{
+			get;
+			set;
+		}
+
 		[Display(Name = "是否为英文")]
 		public bool IsEnglish
 		{

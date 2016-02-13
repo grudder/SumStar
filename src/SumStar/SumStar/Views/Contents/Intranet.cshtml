@@ -1,0 +1,23 @@
+﻿@{
+	Layout = "~/Views/Shared/_Layout.cshtml";
+	ViewBag.Title = @ViewBag.Category.Name;
+}
+
+@model IList<SumStar.Models.Category>
+
+<div id="content-header">
+	<h1>@ViewBag.Level1Category.Name</h1>
+</div>
+<div class="container body-content">
+	<div class="row">
+		@for (int i = 0; i < Model.Count; ++i)
+		{
+			var category = Model[i];
+			@Html.Action("CategoryPanelPartial", category)
+			if (i > 0 && i % 2 == 1)
+			{
+				@:</div><div class="row">
+			}
+		}
+	</div>
+</div>

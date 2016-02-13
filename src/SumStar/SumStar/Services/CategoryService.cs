@@ -54,6 +54,7 @@ namespace SumStar.Services
 						select new ZTreeNode
 						{
 							Id = category.Id,
+							IsParent = !category.IsLeaf,
 							Name = category.Name,
 							ContentType = category.ContentType.ToString()
 						};
@@ -62,7 +63,6 @@ namespace SumStar.Services
 			foreach (ZTreeNode node in nodes)
 			{
 				node.Children = GetChildTreeNodes(node.Id);
-				node.IsParent = node.Children.Count > 0;
 			}
 			return nodes;
 		}
@@ -102,6 +102,20 @@ namespace SumStar.Services
 				parent = category.Parent;
 			}
 			return category;
+		}
+
+		/// <summary>
+		/// 获取所有中文的末级文章栏目。
+		/// </summary>
+		/// <param name="categoryId">顶级栏目的编号。</param>
+		/// <returns>所有中文的末级文章栏目。</returns>
+		public IList<Category> GetChineseLeafArticleCategories(int categoryId)
+		{
+			IList<Category> categories = GetChilds(categoryId, true);
+			categories = categories.Where(category => !category.IsEnglish && category.IsLeaf && category.ContentType == ContentType.Article)
+				.OrderByDescending(category => category.DisplayOrder).ThenByDescending(category => category.CreateTime).ToList();
+
+			return categories;
 		}
 
 		/// <summary>

@@ -83,6 +83,15 @@ namespace SumStar.Controllers
 			return Content(json);
 		}
 
+		// GET: Contents/CategoryPanelPartial
+		[ChildActionOnly]
+		public ActionResult CategoryPanelPartial(Category category)
+		{
+			ViewBag.Category = category;
+			IList<Content> contents = ContentService.GetTopContentsByCategory(category.Id);
+			return PartialView(contents);
+		}
+
 		// GET: Contents/List?categoryId=5&categoryName=新闻动态&pageSize=20&page=1
 		public ActionResult List(int? categoryId, string categoryName, int? pageSize, int? page)
 		{
@@ -125,10 +134,16 @@ namespace SumStar.Controllers
 		}
 
 		[Authorize]
-		// GET: Contents/List?categoryId=5&categoryName=新闻动态&pageSize=20&page=1
-		public ActionResult IntranetList(int? categoryId, string categoryName, int? pageSize, int? page)
+		// GET: Contents/Intranet?categoryId=5
+		public ActionResult Intranet(int categoryId)
 		{
-			return RedirectToAction("List", "Contents", new {categoryId, categoryName, pageSize, page});
+			IList<Category> chineseLeafArticleCategories = CategoryService.GetChineseLeafArticleCategories(categoryId);
+			Category category = DbContext.Categories.Find(categoryId);
+
+			ViewBag.Category = category;
+			ViewBag.Level1Category = CategoryService.GetLevel1Category(category);
+
+			return View(chineseLeafArticleCategories);
 		}
 
 		// GET: Contents/Detail/5

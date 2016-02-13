@@ -75,7 +75,7 @@ namespace SumStar.Controllers
 			ViewBag.Level1Category = level1Category;
             return PartialView("_TreePanelPartial", categories);
 		}
-		
+
 		// GET: Categories/GetBootstrapTree/5?archor=treeCategory
 		public ActionResult GetBootstrapTree(int id, string archor)
 		{
@@ -157,6 +157,7 @@ namespace SumStar.Controllers
 		public ActionResult Create(
 			[Bind(Include = "Id,ParentId,DisplayOrder,IsEnglish,Name,ContentType,DisplayMode,Remark")] Category category)
 		{
+			category.IsLeaf = true;
 			category.CreateBy = HttpContext.User.Identity.GetUserId();
 			category.CreateTime = DateTime.Now;
 
@@ -195,7 +196,7 @@ namespace SumStar.Controllers
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		public ActionResult Edit(
-			[Bind(Include = "Id,ParentId,DisplayOrder,IsEnglish,Name,ContentType,DisplayMode,Remark,CreateBy,CreateTime")] Category category)
+			[Bind(Include = "Id,ParentId,DisplayOrder,IsLeaf,IsEnglish,Name,ContentType,DisplayMode,Remark,CreateBy,CreateTime")] Category category)
 		{
 			if (ModelState.IsValid)
 			{

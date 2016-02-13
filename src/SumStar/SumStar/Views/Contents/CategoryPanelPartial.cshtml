@@ -1,0 +1,25 @@
+﻿@model IList<SumStar.Models.Content>
+
+<div class="col-md-6">
+	<div class="panel panel-primary admin-panel">
+		<div class="panel-heading">
+			<h3 class="panel-title">
+				<a href="@Url.Action("List", "Contents", new {categoryId = ViewBag.Category.Id})">@ViewBag.Category.Name</a>
+				<span class="pull-right">
+					<a href="@Url.Action("List", "Contents", new {categoryId = ViewBag.Category.Id})">更多...</a>
+				</span>
+			</h3>
+		</div>
+		<ul class="list-group" style="height: 204px">
+			@foreach (var content in Model)
+			{
+				<li class="list-group-item">
+					<span class="badge">
+						@content.CreateTime.ToString("yyyy-MM-dd")
+					</span>
+					@Html.ActionLink(content.Title, "Detail", "Contents", new {content.Id}, null)
+				</li>
+			}
+		</ul>
+	</div>
+</div>

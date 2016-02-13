@@ -24,6 +24,21 @@ namespace SumStar.Services
 		}
 
 		/// <summary>
+		/// 获取栏目下的前几条内容。
+		/// </summary>
+		/// <param name="categoryId">栏目标识。</param>
+		/// <param name="topN">前几条。</param>
+		/// <returns>栏目下的前几条内容。</returns>
+		public IList<Content> GetTopContentsByCategory(int categoryId, int topN = 5)
+		{
+			var query = from content in _dbContext.Contents
+						where content.CategoryId == categoryId
+						orderby content.DisplayOrder, content.CreateTime descending
+						select content;
+			return query.Take(topN).ToList();
+		}
+
+		/// <summary>
 		/// 获取栏目下的分页内容。
 		/// </summary>
 		/// <param name="categoryId">栏目标识。</param>
@@ -40,7 +55,7 @@ namespace SumStar.Services
 						orderby content.DisplayOrder descending, content.CreateTime descending
 						select content;
 			// 分页处理
-			pageSize = (pageSize ?? 20);
+			pageSize = (pageSize ?? 15);
 			pageIndex = (pageIndex ?? 1);
 			IPagedList<Content> pagedList = query.Where(predicate).ToPagedList(pageIndex.Value, pageSize.Value);
 			return pagedList;

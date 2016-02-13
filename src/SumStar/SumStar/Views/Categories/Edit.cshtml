@@ -32,6 +32,14 @@
 			</div>
 		</div>
 
+        <div class="form-group hidden">
+            @Html.LabelFor(model => model.IsLeaf, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.IsLeaf)
+                @Html.ValidationMessageFor(model => model.IsLeaf, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
         <div class="form-group">
             @Html.LabelFor(model => model.IsEnglish, new { @class = "control-label col-md-2" })
             <div class="col-md-10">

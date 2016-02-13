@@ -75,6 +75,10 @@ td.right-align {
 		border-color: #002975;
 	}
 
+.panel-title a {
+	color: #fff;
+}
+
 #content-header {
 	height: 375px;
 	background: url("images/bg-content-header.jpg") no-repeat center center;
