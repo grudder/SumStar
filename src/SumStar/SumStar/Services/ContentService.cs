@@ -55,7 +55,7 @@ namespace SumStar.Services
 						orderby content.DisplayOrder descending, content.CreateTime descending
 						select content;
 			// 分页处理
-			pageSize = (pageSize ?? 15);
+			pageSize = (pageSize ?? 10);
 			pageIndex = (pageIndex ?? 1);
 			IPagedList<Content> pagedList = query.Where(predicate).ToPagedList(pageIndex.Value, pageSize.Value);
 			return pagedList;
